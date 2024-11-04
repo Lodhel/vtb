@@ -17,7 +17,8 @@ class CBR_ExtendParser(CBR_FetchManager):
         if inflation_section:
             try:
                 rate_value = inflation_section.select('.value')[1].text.strip()
-                data['inflation_goals'] = inflation_section.select_one('.value').text.strip()
+                inflation_goals = inflation_section.select_one('.value').text.strip()
+                data['inflation_goals'] = float(inflation_goals.replace(',', '.').replace(' ', '').replace('%', ''))
                 data['inflation_data'] = {
                     'rate_value': float(rate_value.replace(',', '.').replace(' ', '').replace('%', '')),
                     'is_date': inflation_section.select('.denotement')[1].text.strip()
@@ -146,6 +147,6 @@ class CBR_ExtendParser(CBR_FetchManager):
                     requirement_name = " ".join(cells[0].text.split())
                     requirement_value = cells[1].text.strip()
                     data[requirement_name] = float(
-                        requirement_value(',', '.').replace(' ', '')
+                        requirement_value.replace(',', '.').replace(' ', '')
                     ) if requirement_value else None
         return data

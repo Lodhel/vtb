@@ -41,8 +41,8 @@ class KeyRate(Base):
     id = Column(Integer, primary_key=True)
     is_date = Column(Date, nullable=False)
     rate_value = Column(Float, nullable=False)
-    rate_change_date = Column(String, nullable=True)
-    next_meeting_date = Column(String, nullable=True)
+    rate_change_date = Column(Date, nullable=True)
+    next_meeting_date = Column(Date, nullable=True)
 
 
 # Модель для ставок межбанковского кредитного рынка

@@ -61,6 +61,8 @@ class CBR_DB_Manager(ManagerSQLAlchemy, CBR_Loader):
         await self.save_reserve(session)
         await self.save_bank_requirements(session)
 
+        await session.commit()
+
     async def save_inflation(self, session: AsyncSession):
         await self.save_inflation_goal(session)
         await self.save_inflation_data(session)
@@ -77,8 +79,7 @@ class CBR_DB_Manager(ManagerSQLAlchemy, CBR_Loader):
         inflation_goal = InflationData(
             is_date=self.is_date,
             rate_value=self.data['inflation']['inflation_data']['rate_value'],
-            rate_change_date=self.data['inflation']['inflation_data']['is_date'],
-            next_meeting_date=self.data['inflation']['inflation_data']['is_date']
+            period=self.data['inflation']['inflation_data']['is_date']
         )
         session.add(inflation_goal)
         await session.flush()
@@ -105,12 +106,12 @@ class CBR_DB_Manager(ManagerSQLAlchemy, CBR_Loader):
             await session.flush()
 
     async def save_currency_rates(self, session: AsyncSession):
-        for rate_name in self.data['currency_rates'].keys():
+        for currency_name in self.data['currency_rates'].keys():
             currency_rate = CurrencyRate(
                 is_date=self.is_date,
-                rate_name=rate_name,
-                rate_today=self.data['currency_rates'][rate_name]['rate_today'],
-                rate_tomorrow=self.data['currency_rates'][rate_name]['rate_tomorrow']
+                currency_name=currency_name,
+                rate_today=self.data['currency_rates'][currency_name]['rate_today'],
+                rate_tomorrow=self.data['currency_rates'][currency_name]['rate_tomorrow']
             )
             session.add(currency_rate)
             await session.flush()
@@ -129,7 +130,7 @@ class CBR_DB_Manager(ManagerSQLAlchemy, CBR_Loader):
     async def save_reserve(self, session: AsyncSession):
         reserve = Reserve(
             is_date=self.is_date,
-            rate_date=self.data['reserves']['rate_date'],
+            rate_date=self.data['reserves']['is_date'],
             reserve_value=self.data['reserves']['reserve_value']
         )
         session.add(reserve)

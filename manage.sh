@@ -13,6 +13,7 @@ if [ -n "$1" ]; then
     start) start ;;
     stop) stop ;;
     restart) stop ; start ;;
+    load_cbr_data) docker exec vtb24_fast_api_mvp_1 sh load_cbr_data.sh ;;
     *) echo "$1 is not an option." ;;
     esac
 else
