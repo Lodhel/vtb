@@ -41,8 +41,8 @@ class KeyRate(Base):
     id = Column(Integer, primary_key=True)
     is_date = Column(Date, nullable=False)
     rate_value = Column(Float, nullable=False)
-    rate_change_date = Column(Date, nullable=True)
-    next_meeting_date = Column(Date, nullable=True)
+    rate_change_date = Column(String, nullable=True)
+    next_meeting_date = Column(String, nullable=True)
 
 
 # Модель для ставок межбанковского кредитного рынка
@@ -52,8 +52,8 @@ class InterbankRate(Base):
     id = Column(Integer, primary_key=True)
     is_date = Column(Date, nullable=False)
     rate_name = Column(String, nullable=False)
-    rate_today = Column(Float, nullable=True)
-    rate_tomorrow = Column(Float, nullable=True)
+    rate_today = Column(String, nullable=True)
+    rate_tomorrow = Column(String, nullable=True)
 
 
 # Модель для курсов валют
@@ -84,6 +84,7 @@ class Reserve(Base):
 
     id = Column(Integer, primary_key=True)
     is_date = Column(Date, nullable=False)
+    rate_date = Column(Date, nullable=True)
     reserve_value = Column(Float, nullable=True)
 
 

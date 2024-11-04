@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from bs4 import BeautifulSoup
 
 from backend.cbr.cbr_fetch_manager import CBR_FetchManager
@@ -21,11 +23,15 @@ class CBRParser(CBR_FetchManager):
             Ключевая ставка
         """
         key_rate_block = soup.find_all('div', class_='main-indicator')[2]
+        rate_value: str = key_rate_block.find('div', class_='main-indicator_value').text.strip()
+        rate_change_date: str = key_rate_block.find('div', class_='main-indicator_text').text.strip().replace('с ', '')
+        next_meeting_date: str = key_rate_block.find('div', class_='main-indicator_comment-date').text.strip()
+
         if key_rate_block:
             return {
-                'rate_value': key_rate_block.find('div', class_='main-indicator_value').text.strip(),
-                'rate_change_date': key_rate_block.find('div', class_='main-indicator_text').text.strip(),
-                'next_meeting_date': key_rate_block.find('div', class_='main-indicator_comment-date').text.strip()
+                'rate_value': float(rate_value.replace(',', '.').replace(' ', '').replace('%', '')),
+                'rate_change_date': datetime.strptime(rate_change_date, '%d.%m.%Y').date(),
+                'next_meeting_date': datetime.strptime(next_meeting_date, '%d.%m.%Y').date()
             }
 
     @staticmethod

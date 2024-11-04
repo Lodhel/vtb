@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from bs4 import BeautifulSoup
 
 from loguru import logger
@@ -14,9 +16,10 @@ class CBR_ExtendParser(CBR_FetchManager):
         data: dict = {}
         if inflation_section:
             try:
+                rate_value = inflation_section.select('.value')[1].text.strip()
                 data['inflation_goals'] = inflation_section.select_one('.value').text.strip()
                 data['inflation_data'] = {
-                    'rate_value': inflation_section.select('.value')[1].text.strip(),
+                    'rate_value': float(rate_value.replace(',', '.').replace(' ', '').replace('%', '')),
                     'is_date': inflation_section.select('.denotement')[1].text.strip()
                 }
             except (IndexError, AttributeError):
@@ -73,9 +76,9 @@ class CBR_ExtendParser(CBR_FetchManager):
             for row in currency_rows[1:]:
                 cells = row.find_all('td')
                 if len(cells) > 2:
-                    currency_name = " ".join(cells[0].text.split())
-                    rate_today = cells[1].text.strip()
-                    rate_tomorrow = cells[2].text.strip()
+                    currency_name: str = " ".join(cells[0].text.split())
+                    rate_today: float = float(cells[1].text.strip().replace(',', '.').replace(' ', ''))
+                    rate_tomorrow: float = float(cells[2].text.strip().replace(',', '.').replace(' ', ''))
                     currency_data[currency_name] = {'rate_today': rate_today, 'rate_tomorrow': rate_tomorrow}
         return currency_data
 
@@ -92,8 +95,8 @@ class CBR_ExtendParser(CBR_FetchManager):
                 cells = row.find_all('td')
                 if len(cells) > 2:
                     metal_name = " ".join(cells[0].text.split())
-                    price_today = cells[1].text.strip()
-                    price_tomorrow = cells[2].text.strip()
+                    price_today: float = float(cells[1].text.strip().replace(',', '.').replace(' ', ''))
+                    price_tomorrow: float = float(cells[2].text.strip().replace(',', '.').replace(' ', ''))
                     metals_data[metal_name] = {'price_today': price_today, 'price_tomorrow': price_tomorrow}
         return metals_data
 
@@ -104,10 +107,11 @@ class CBR_ExtendParser(CBR_FetchManager):
         """
         reserves_section = soup.find('div', text=lambda x: x and 'Международные резервы Российской Федерации' in x)
         if reserves_section:
-            reserves_date = reserves_section.find_next('a').text.strip() if reserves_section.find_next('a') else 'Нет данных'
+            reserves_date = reserves_section.find_next('a').text.strip() if reserves_section.find_next('a') else None
+            reserves_date = datetime.strptime(reserves_date, '%d.%m.%Y').date() if reserves_date else None
             reserves_value = reserves_section.find_next(
                 'div', class_='value'
-            ).text.strip() if reserves_section.find_next('div', class_='value') else 'Нет данных'
+            ).text.strip() if reserves_section.find_next('div', class_='value') else None
             return {'is_date': reserves_date, 'reserve_value': reserves_value}
 
     @staticmethod
@@ -141,5 +145,7 @@ class CBR_ExtendParser(CBR_FetchManager):
                 if len(cells) > 1:
                     requirement_name = " ".join(cells[0].text.split())
                     requirement_value = cells[1].text.strip()
-                    data[requirement_name] = requirement_value
+                    data[requirement_name] = float(
+                        requirement_value(',', '.').replace(' ', '')
+                    ) if requirement_value else None
         return data
