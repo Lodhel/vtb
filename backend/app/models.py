@@ -106,3 +106,16 @@ class BankRequirement(Base):
     is_date = Column(Date, nullable=False)
     requirement_name = Column(String, nullable=False)
     rate_value = Column(Float, nullable=True)
+
+
+class CarModel(Base):
+    __tablename__ = 'car_models'
+
+    id = Column(Integer, primary_key=True)
+    model_car = Column(String)
+    year = Column(Integer)
+    transmission_type = Column(String)
+    body_type = Column(String)
+    fuel_type = Column(String)
+    average_price = Column(Float)
+    status = Column(String)
