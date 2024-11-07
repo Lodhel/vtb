@@ -17,8 +17,8 @@ car_tags = ["car_router"]
 class CarRouter(MainRouterMIXIN, ManagerSQLAlchemy):
 
     @car_router.get(
-        "/auth/",
-        name='auth_user',
+        "/car/",
+        name='car_user',
         responses=cars_responses,
         description='Получение списка автомобилей',
         tags=car_tags
@@ -26,7 +26,7 @@ class CarRouter(MainRouterMIXIN, ManagerSQLAlchemy):
     async def get(self, request: Request, response: Response, params: CarParams = Depends()):
         conditions = self.make_conditions(params)
         async with AsyncSession(self.engine, autoflush=False, expire_on_commit=False) as session:
-            if conditions:
+            if conditions is not None:
                 car_models_select = await session.execute(select(CarModel).filter(conditions))
             else:
                 car_models_select = await session.execute(select(CarModel))

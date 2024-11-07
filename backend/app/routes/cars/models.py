@@ -1,12 +1,11 @@
 from fastapi import Query
 
-
 class CarParams:
     def __init__(
         self,
-        model_car: str = Query(..., description="модель авто"),
-        year: int = Query(..., description="год выпуска"),
-        transmission_type: str = Query(..., description="тип КПП")
+        model_car: str = Query(None, description="модель авто"),
+        year: int = Query(None, description="год выпуска"),
+        transmission_type: str = Query(None, description="тип КПП")
     ):
         self.model_car = model_car
         self.year = year
