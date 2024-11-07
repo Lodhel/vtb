@@ -7,13 +7,14 @@ cars_responses = {
                     "Успех": {
                         "summary": "Пример успешного запроса",
                         "value": {
-                            "Model": "Toyota Camry",
-                            "Year": 2005,
-                            "TransmissionType": "Automatic",
-                            "BodyType": "Sedan",
-                            "FuelType": "Petrol",
-                            "AveragePrice": 1700000,
-                            "Status": "Used"
+                            'id': 1,
+                            "model_car": "Toyota Camry",
+                            "year": 2005,
+                            "transmission_type": "Automatic",
+                            "body_type": "Sedan",
+                            "fuel_type": "Petrol",
+                            "average_price": 1700000,
+                            "status": "Used"
                         }
                     },
                 }
