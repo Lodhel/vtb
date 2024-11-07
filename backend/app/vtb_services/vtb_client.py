@@ -8,14 +8,14 @@ class VTB_CLIENT:
     BASE_VTB_API_URL: str = 'https://api.bankingapi.ru/extapi/aft/clientInfo/hackathon/v1/'
 
     @classmethod
-    async def _get_headers(cls) -> dict:
-        access_token: str = await cls._get_access_token()
+    async def get_headers(cls) -> dict:
+        access_token: str = await cls.get_access_token()
         return {
             'Authorization': f'Bearer {access_token}'
         }
 
     @staticmethod
-    async def _get_access_token() -> str:
+    async def get_access_token() -> str:
         base_url: str = 'https://auth.bankingapi.ru/auth/realms/kubernetes/protocol/openid-connect/token'
 
         data: dict = {
