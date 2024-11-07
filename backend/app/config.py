@@ -9,4 +9,6 @@ DATABASE_USER = os.getenv('POSTGRES_USER')
 DATABASE_PASSWORD = os.getenv('POSTGRES_PASSWORD')
 DATABASE_PORT = os.getenv('SQL_PORT')
 
+CLIENT_SECRET = os.getenv('CLIENT_SECRET')
+
 STATIC_DIR: str = f'{os.path.dirname(os.path.abspath(__file__))}/static'
