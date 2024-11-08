@@ -11,7 +11,7 @@ ENV PYTHONUNBUFFERED 1
 RUN apk add build-base
 RUN python3 -m pip install --upgrade pip
 
-COPY backend/requirements.txt .
+COPY backend/requirements.txt ./
 RUN pip install -r requirements.txt
 
-COPY .. .
+COPY backend/app/ ./
