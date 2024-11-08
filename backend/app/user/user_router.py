@@ -13,9 +13,8 @@ from backend.app.orm_sender.manager_sqlalchemy import ManagerSQLAlchemy
 from backend.app.routes.auth_manager import UserAuthManager
 from backend.app.routes.general_models import GeneralHeadersModel
 from backend.app.routes.main import MainRouterMIXIN
-from backend.app.user.models import UserModel, UserGETModel, UserDataModel, UserActivateModel
-from backend.app.user.response_models import auth_responses, user_create_responses, user_responses, user_auth_responses, \
-    user_data_responses, user_vtb_responses
+from backend.app.user.models import *
+from backend.app.user.response_models import *
 
 user_router = InferringRouter()
 user_tags = ["user_router"]
@@ -41,6 +40,7 @@ class UserAuthRouter(UserRouterMIXIN):
     @user_router.get(
         "/auth/",
         name='auth_user',
+        response_model=UserResponse,
         responses=auth_responses,
         description='Авторизация',
         tags=user_tags
@@ -58,6 +58,7 @@ class UserAuthRouter(UserRouterMIXIN):
     @user_router.post(
         "/auth/",
         name='auth_user',
+        response_model=UserResponse,
         responses=user_auth_responses,
         description='Аунтефикация',
         tags=user_tags
@@ -78,6 +79,7 @@ class UserRouter(UserRouterMIXIN):
     @user_router.post(
         "/user/",
         name='create_user',
+        response_model=UserCreateResponse,
         responses=user_create_responses,
         description='Создание пользователя',
         tags=user_tags
@@ -98,6 +100,7 @@ class UserRouter(UserRouterMIXIN):
     @user_router.post(
         "/activate_user/",
         name='activate_user',
+        response_model=UserResponse,
         responses=user_create_responses,
         description='Подтверждение пользователя',
         tags=user_tags
@@ -138,6 +141,7 @@ class UserRouter(UserRouterMIXIN):
     @user_router.post(
         "/user_data/",
         name='create_user_data',
+        response_model=UserResponse,
         responses=user_data_responses,
         description='Дополнение данных пользователя',
         tags=user_tags
@@ -182,6 +186,7 @@ class UserVTBRouter(UserRouterMIXIN):
     @user_router.get(
         "/user_vtb/",
         name='user_vtb',
+        response_model=UserResponse,
         responses=user_vtb_responses,
         description='Вход через VTB ID',
         tags=user_tags

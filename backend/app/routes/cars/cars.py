@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.models import CarModel
 from backend.app.orm_sender.manager_sqlalchemy import ManagerSQLAlchemy
-from backend.app.routes.cars.models import CarParams
+from backend.app.routes.cars.models import CarParams, CarResponse
 from backend.app.routes.cars.response_models import cars_responses
 from backend.app.routes.main import MainRouterMIXIN
 
@@ -19,6 +19,7 @@ class CarRouter(MainRouterMIXIN, ManagerSQLAlchemy):
     @car_router.get(
         "/car/",
         name='car_user',
+        response_model=CarResponse,
         responses=cars_responses,
         description='Получение списка автомобилей',
         tags=car_tags

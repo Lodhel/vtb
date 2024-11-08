@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from fastapi import Query, UploadFile
+from fastapi import Query
 
 
 class UserModel(BaseModel):
@@ -35,3 +35,18 @@ class UserQuestionnaireParams:
         user_id: int = Query(..., description="идентификатор пользователя анкеты")
     ):
         self.user_id = user_id
+
+
+class UserResponse(BaseModel):
+    id: int
+    name: str
+    lastname: str
+    phone_number: str
+    email: str
+    vtb_auth: str
+    token_auth: str
+
+
+class UserCreateResponse(BaseModel):
+    code: str
+    token_auth: str

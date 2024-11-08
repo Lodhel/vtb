@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from backend.app.models import InflationGoal, InflationData, KeyRate, InterbankRate, CurrencyRate, MetalPrice, \
     Reserve, LiquidityIndicator, BankRequirement
 from backend.app.orm_sender.manager_sqlalchemy import ManagerSQLAlchemy
-from backend.app.routes.cbr.models import CbrParams
+from backend.app.routes.cbr.models import CbrParams, ComplexCBR_Response
 from backend.app.routes.cbr.response_models import cbr_responses
 from backend.app.routes.main import MainRouterMIXIN
 
@@ -22,6 +22,7 @@ class CarRouter(MainRouterMIXIN, ManagerSQLAlchemy):
     @cbr_router.get(
         "/cbr/",
         name='cbr',
+        response_model=ComplexCBR_Response,
         responses=cbr_responses,
         description='Получение данных по ЦБ',
         tags=cbr_tags

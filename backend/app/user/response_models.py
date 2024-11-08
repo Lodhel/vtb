@@ -7,6 +7,7 @@ user_responses = {
                     "Успех": {
                         "summary": "Пример успешного запроса",
                         "value": {
+                            'id': 1,
                             'name': 'name',
                             'lastname': 'lastname',
                             'phone_number': '+70000000000',
@@ -30,6 +31,7 @@ user_download_responses = {
                     "Успех": {
                         "summary": "Пример успешного запроса",
                         "value": {
+                            'id': 1,
                             'name': 'name',
                             'lastname': 'lastname',
                             'phone_number': '+70000000000',
@@ -53,6 +55,7 @@ user_auth_responses = {
                     "Успех": {
                         "summary": "Пример успешного запроса",
                         "value": {
+                            'id': 1,
                             'name': 'name',
                             'lastname': 'lastname',
                             'phone_number': '+70000000000',
@@ -76,11 +79,7 @@ user_create_responses = {
                     "Успех": {
                         "summary": "Пример успешного запроса",
                         "value": {
-                            'name': 'name',
-                            'lastname': 'lastname',
-                            'phone_number': '+70000000000',
-                            'email': 'mail@mail.ru',
-                            'vtb_auth': '',
+                            'code': '0000',
                             'token_auth': 'token_auth'
                         }
                     },
@@ -99,6 +98,7 @@ user_data_responses = {
                     "Успех": {
                         "summary": "Пример успешного запроса",
                         "value": {
+                            'id': 1,
                             'name': 'name',
                             'lastname': 'lastname',
                             'phone_number': '+70000000000',
@@ -122,6 +122,7 @@ auth_responses = {
                     "Успех": {
                         "summary": "Пример успешного запроса",
                         "value": {
+                            'id': 1,
                             'name': 'name',
                             'lastname': 'lastname',
                             'phone_number': '+70000000000',
