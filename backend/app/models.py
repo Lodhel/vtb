@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Float, String, Date, DateTime
+from sqlalchemy import Column, Integer, Float, String, Date, DateTime, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
 
@@ -9,10 +9,16 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, nullable=False)
+    name = Column(String, nullable=True)
+    lastname = Column(String, nullable=True)
+    password = Column(String, nullable=True)
     phone_number = Column(String(255), nullable=False)
     email = Column(String, unique=True, index=True, nullable=True)
     created_at = Column(DateTime, server_default=func.now())
+    vtb_auth = Column(String(255))
+    token_auth = Column(String(255), nullable=False, unique=True)
+    is_active = Column(Boolean, default=False)
+    sms_code = Column(String, default='0000')
 
 
 # Модель для цели по инфляции

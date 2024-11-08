@@ -28,7 +28,10 @@ class CarRouter(MainRouterMIXIN, ManagerSQLAlchemy):
     )
     async def get(self, request: Request, response: Response, params: CbrParams = Depends()):
         async with AsyncSession(self.engine, autoflush=False, expire_on_commit=False) as session:
-            rate_date = datetime.datetime.strptime(params.rate_date, "%Y-%m-%d").date()
+            if not params.rate_date:
+                rate_date = datetime.date.today()
+            else:
+                rate_date = datetime.datetime.strptime(params.rate_date, "%Y-%m-%d").date()
             data = await self._get_data_by_response_created(session, rate_date)
             return data
 

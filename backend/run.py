@@ -5,7 +5,13 @@ from backend.app.routes import router
 
 
 def create_app() -> FastAPI:
-    app: FastAPI = FastAPI(title="MVP v.0.1", version="0.1.0", description='API MVP services.', redoc_url='/openapi')
+    app = FastAPI(
+        title="MVP v.0.1",
+        version="0.1.0",
+        description="API MVP services.",
+        docs_url=None,
+        redoc_url="/openapi"
+    )
     app.include_router(router)
 
     app.add_middleware(
