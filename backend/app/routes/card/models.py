@@ -1,6 +1,5 @@
 from fastapi import Query
 from pydantic import BaseModel
-from typing import Dict
 
 
 class CardParams:
@@ -17,11 +16,14 @@ class AmountResponse(BaseModel):
 
 
 class BalanceResponse(BaseModel):
-    balance: Dict[AmountResponse]
+    amount: AmountResponse
+    creditDebitIndicator: str
+    type: str
 
 
 class CardResponse(BaseModel):
     accountId: str
-    balance: Dict[BalanceResponse]
+    balance: BalanceResponse
     creditDebitIndicator: str
     type: str
+
