@@ -27,8 +27,8 @@ class VTB_AccountsManager(VTB_AUTH_CLIENT):
                 }
             ]
         """
-        async with httpx.AsyncClient() as client:
-            headers = await self.get_headers()
+        async with httpx.AsyncClient(verify=False) as client:
+            headers = await self.get_headers(client)
             response = await client.get(f'{self.BASE_VTB_API_URL}accounts', headers=headers)
             data: dict = response.json()
             try:
@@ -37,14 +37,14 @@ class VTB_AccountsManager(VTB_AUTH_CLIENT):
                 return []
 
     async def get_account(self, account_id: str) -> dict:
-        async with httpx.AsyncClient() as client:
-            headers = await self.get_headers()
+        async with httpx.AsyncClient(verify=False) as client:
+            headers = await self.get_headers(client)
             response = await client.get(f'{self.BASE_VTB_API_URL}accounts/{account_id}', headers=headers)
             return response.json()
 
     async def get_balance(self, account_id: str) -> dict:
-        async with httpx.AsyncClient() as client:
-            headers = await self.get_headers()
+        async with httpx.AsyncClient(verify=False) as client:
+            headers = await self.get_headers(client)
             response = await client.get(f'{self.BASE_VTB_API_URL}accounts/{account_id}/balance', headers=headers)
             data: dict = response.json()
             try:
