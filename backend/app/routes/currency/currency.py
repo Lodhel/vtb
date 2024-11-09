@@ -35,7 +35,7 @@ class CurrencyRouter(MainRouterMIXIN, ManagerSQLAlchemy):
                 currencies_select = await session.execute(select(Currency))
             currencies = currencies_select.scalars().all()
             data: list = [
-                self._get_data_by_response_created(currency) for currency in currencies
+                self.get_data_by_response_created(currency) for currency in currencies
             ]
             return self.get_data(data)
 
@@ -53,7 +53,7 @@ class CurrencyRouter(MainRouterMIXIN, ManagerSQLAlchemy):
         return and_(*conditions) if conditions else None
 
     @staticmethod
-    def _get_data_by_response_created(currency_model: Currency) -> dict:
+    def get_data_by_response_created(currency_model: Currency) -> dict:
         return {
             'id': currency_model.id,
             'is_date': currency_model.is_date.strftime('%Y-%m-%d'),

@@ -1,9 +1,20 @@
-from sqlalchemy import Column, Integer, Float, String, Date, DateTime, Boolean, Numeric
+from sqlalchemy import Column, Integer, Float, String, Date, DateTime, Boolean, Numeric, ForeignKey, Enum, Table
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
+
+from enum import Enum as PyEnum
 
 
 Base = declarative_base()
+
+
+accumulated_account_invitations = Table(
+    "accumulated_account_invitations",
+    Base.metadata,
+    Column("account_id", Integer, ForeignKey("accumulated_accounts.id"), primary_key=True),
+    Column("invited_user_id", Integer, ForeignKey("users.id"), primary_key=True)
+)
 
 
 class User(Base):
@@ -19,6 +30,31 @@ class User(Base):
     token_auth = Column(String(255), nullable=False, unique=True)
     is_active = Column(Boolean, default=False)
     sms_code = Column(String, default='0000')
+
+    accumulated_account = relationship("AccumulatedAccount", back_populates="owner", uselist=False)
+
+
+class AccumulatedAccount(Base):
+    __tablename__ = "accumulated_accounts"
+
+    class CurrencyType(PyEnum):
+        RUB = "RUB"
+        USD = "USD"
+        EUR = "EUR"
+        CNY = "CNY"
+
+    id = Column(Integer, primary_key=True, index=True)
+    owner_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    amount = Column(Float, default=0.0)
+    currency = Column(Enum(CurrencyType), nullable=False, default=CurrencyType.RUB)
+    created_at = Column(DateTime, server_default=func.now())
+
+    owner = relationship("User", back_populates="accumulated_account")
+    invited_users = relationship(
+        "User",
+        secondary=accumulated_account_invitations,
+        backref="invited_accounts"
+    )
 
 
 # Модель для цели по инфляции

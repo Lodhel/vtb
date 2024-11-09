@@ -33,7 +33,7 @@ class CarRouter(MainRouterMIXIN, ManagerSQLAlchemy):
                 car_models_select = await session.execute(select(CarModel))
             car_models = car_models_select.scalars().all()
             data: list = [
-                self._get_data_by_response_created(car_model) for car_model in car_models
+                self.get_data_by_response_created(car_model) for car_model in car_models
             ]
             result = self.get_data(data)
             return result
@@ -54,7 +54,7 @@ class CarRouter(MainRouterMIXIN, ManagerSQLAlchemy):
         return and_(*conditions) if conditions else None
 
     @staticmethod
-    def _get_data_by_response_created(car_model: CarModel) -> dict:
+    def get_data_by_response_created(car_model: CarModel) -> dict:
         return {
             'id': car_model.id,
             'model_car': car_model.model_car,

@@ -38,12 +38,12 @@ class CbrRouter(MainRouterMIXIN, ManagerSQLAlchemy):
             data = result.scalars().all()
             return self.get_data(
                 [
-                    self._get_data_by_response_created(inflation) for inflation in data
+                    self.get_data_by_response_created(inflation) for inflation in data
                 ]
             )
 
     @staticmethod
-    def _get_data_by_response_created(inflation: Inflation) -> dict:
+    def get_data_by_response_created(inflation: Inflation) -> dict:
         return {
             'id': inflation.id,
             'is_date': inflation.is_date.strftime('%Y-%m-%d'),
@@ -69,11 +69,11 @@ class CbrRouter(MainRouterMIXIN, ManagerSQLAlchemy):
                 rate_date = datetime.date.today()
             else:
                 rate_date = datetime.datetime.strptime(params.rate_date, "%Y-%m-%d").date()
-            data = await self._get_data_by_response_created(session, rate_date)
+            data = await self.get_data_by_response_created(session, rate_date)
             return data
 
     @staticmethod
-    async def _get_data_by_response_created(session: AsyncSession, rate_date) -> dict:
+    async def get_data_by_response_created(session: AsyncSession, rate_date) -> dict:
         data: dict = {}
         models = [
             (InflationGoal, "inflation_goal"),

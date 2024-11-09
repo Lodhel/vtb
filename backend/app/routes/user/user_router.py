@@ -23,7 +23,7 @@ user_tags = ["user_router"]
 class UserRouterMIXIN(UserAuthManager, MainRouterMIXIN, ManagerSQLAlchemy):
 
     @staticmethod
-    def _get_data_by_response_created(user_profile: User) -> dict:
+    def get_data_by_response_created(user_profile: User) -> dict:
         return {
             'id': user_profile.id,
             'name': user_profile.name,
@@ -49,7 +49,7 @@ class UserAuthRouter(UserRouterMIXIN):
         async with AsyncSession(self.engine, autoflush=False, expire_on_commit=False) as session:
             logger.info(headers.authorization)
             if user_profile := await self.authenticate_user(session, None, None, headers.authorization):
-                data: dict = self._get_data_by_response_created(user_profile)
+                data: dict = self.get_data_by_response_created(user_profile)
                 result = self.get_data(data)
                 return result
 
@@ -66,7 +66,7 @@ class UserAuthRouter(UserRouterMIXIN):
     async def post(self, request: Request, response: Response, body: UserGETModel):
         async with AsyncSession(self.engine, autoflush=False, expire_on_commit=False) as session:
             if user_profile := await self.authenticate_user(session, body.phone_number, body.password, None):
-                data: dict = self._get_data_by_response_created(user_profile)
+                data: dict = self.get_data_by_response_created(user_profile)
                 result = self.get_data(data)
                 return result
 
@@ -112,7 +112,7 @@ class UserRouter(UserRouterMIXIN):
             if user_profile and body.sms_code == user_profile.sms_code:
                 user_profile.is_active = True
                 await session.commit()
-                return self._get_data_by_response_created(user_profile)
+                return self.get_data_by_response_created(user_profile)
 
         return self.make_response_by_error()
 
@@ -120,12 +120,12 @@ class UserRouter(UserRouterMIXIN):
     async def create_user(cls, data: dict) -> dict:
         async with AsyncSession(cls.engine, autoflush=False, expire_on_commit=False) as session:
             if user_profile := await cls._check_phone_number_by_user(session, data['phone_number']):
-                return cls._get_data_by_response_created(user_profile)
+                return cls.get_data_by_response_created(user_profile)
 
             user_profile: User = User(**data)
             session.add(user_profile)
             await session.commit()
-            return cls._get_data_by_response_created(user_profile)
+            return cls.get_data_by_response_created(user_profile)
 
     @staticmethod
     async def _check_phone_number_by_user(session: AsyncSession, phone_number: str) -> User | None:
@@ -170,7 +170,7 @@ class UserDataRouter(UserRouterMIXIN):
             user_profile.email = data['email']
             await session.commit()
 
-            return self._get_data_by_response_created(user_profile)
+            return self.get_data_by_response_created(user_profile)
 
     @staticmethod
     async def _get_user_by_phone_number(session: AsyncSession, phone_number: str) -> User | None:
@@ -201,7 +201,7 @@ class UserVTBRouter(UserRouterMIXIN):
     async def get_or_create_user(cls, data: dict) -> dict:
         async with AsyncSession(cls.engine, autoflush=False, expire_on_commit=False) as session:
             if user_profile := await cls._get_user_by_phone_number(session, data['phone_number']):
-                data: dict = cls._get_data_by_response_created(user_profile)
+                data: dict = cls.get_data_by_response_created(user_profile)
                 result = cls.get_data(data)
                 return result
 
@@ -209,7 +209,7 @@ class UserVTBRouter(UserRouterMIXIN):
             session.add(user_profile)
             await session.commit()
 
-            data: dict = cls._get_data_by_response_created(user_profile)
+            data: dict = cls.get_data_by_response_created(user_profile)
             result = cls.get_data(data)
             return result
 
