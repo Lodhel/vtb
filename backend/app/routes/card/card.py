@@ -25,4 +25,5 @@ class CardRouter(MainRouterMIXIN):
         tags=card_tags
     )
     async def get(self, request: Request, response: Response, params: CardParams = Depends()):
-        return await self.vtb_account_manager.get_balance(params.account_id)
+        data = await self.vtb_account_manager.get_balance(params.account_id)
+        return self.get_data(data)

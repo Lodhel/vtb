@@ -36,7 +36,20 @@ class CbrRouter(MainRouterMIXIN, ManagerSQLAlchemy):
                 result = await session.execute(select(Inflation).filter(Inflation.is_date == rate_date))
 
             data = result.scalars().all()
-            return data
+            return self.get_data(
+                [
+                    self._get_data_by_response_created(inflation) for inflation in data
+                ]
+            )
+
+    @staticmethod
+    def _get_data_by_response_created(inflation: Inflation) -> dict:
+        return {
+            'id': inflation.id,
+            'is_date': inflation.is_date.strftime('%Y-%m-%d'),
+            'rate': float(inflation.rate),
+            'inflation_rate': float(inflation.inflation_rate)
+        }
 
 
 @cbv(cbr_router)

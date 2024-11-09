@@ -1,3 +1,5 @@
+import datetime
+
 from fastapi import APIRouter, Request, Response, Depends
 from fastapi_utils.cbv import cbv
 from sqlalchemy import select, and_
@@ -35,15 +37,15 @@ class CurrencyRouter(MainRouterMIXIN, ManagerSQLAlchemy):
             data: list = [
                 self._get_data_by_response_created(currency) for currency in currencies
             ]
-            result = self.get_data(data)
-            return result
+            return self.get_data(data)
 
     @staticmethod
     def make_conditions(params: CurrencyParams):
         conditions: list = []
 
         if params.rate_date:
-            conditions.append(Currency.rate_date == params.rate_date)
+            rate_date = datetime.datetime.strptime(params.rate_date, "%Y-%m-%d").date()
+            conditions.append(Currency.is_date == rate_date)
 
         if params.currency_type:
             conditions.append(Currency.currency_type == params.currency_type)
@@ -54,7 +56,7 @@ class CurrencyRouter(MainRouterMIXIN, ManagerSQLAlchemy):
     def _get_data_by_response_created(currency_model: Currency) -> dict:
         return {
             'id': currency_model.id,
-            'is_date': currency_model.is_date,
-            'rate': currency_model.rate,
+            'is_date': currency_model.is_date.strftime('%Y-%m-%d'),
+            'rate': float(currency_model.rate),
             'currency_type': currency_model.currency_type
         }
