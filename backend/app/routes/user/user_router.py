@@ -14,6 +14,7 @@ from backend.app.routes.auth_manager import UserAuthManager
 from backend.app.routes.general_models import GeneralHeadersModel
 from backend.app.routes.main import MainRouterMIXIN
 from backend.app.routes.user.models import *
+from backend.app.routes.user.response_models import *
 
 user_router = InferringRouter()
 user_tags = ["user_router"]
