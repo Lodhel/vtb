@@ -11,7 +11,10 @@ card_tags = ["card_router"]
 
 
 @cbv(card_router)
-class CarRouter(VTB_AccountsManager, MainRouterMIXIN):
+class CarRouter(MainRouterMIXIN):
+
+    def __init__(self):
+        self.vtb_account_manager = VTB_AccountsManager()
 
     @card_router.get(
         "/card/",
@@ -22,4 +25,4 @@ class CarRouter(VTB_AccountsManager, MainRouterMIXIN):
         tags=card_tags
     )
     async def get(self, request: Request, response: Response, params: CardParams = Depends()):
-        return await self.get_balance(params.account_id)
+        return await self.vtb_account_manager.get_balance(params.account_id)
