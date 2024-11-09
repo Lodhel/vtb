@@ -7,9 +7,9 @@ class VTB_AUTH_CLIENT:
 
     BASE_VTB_API_URL: str = 'https://api.bankingapi.ru/extapi/aft/clientInfo/hackathon/v1/'
 
-    @property
-    async def headers(self) -> dict:
-        access_token: str = await self.get_access_token()
+    @classmethod
+    async def get_headers(cls) -> dict:
+        access_token: str = await cls.get_access_token()
         return {
             'Authorization': f'Bearer {access_token}'
         }
