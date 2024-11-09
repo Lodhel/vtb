@@ -24,6 +24,3 @@ class BalanceResponse(BaseModel):
 class CardResponse(BaseModel):
     accountId: str
     balance: BalanceResponse
-    creditDebitIndicator: str
-    type: str
-
