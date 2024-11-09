@@ -13,8 +13,7 @@ from backend.app.orm_sender.manager_sqlalchemy import ManagerSQLAlchemy
 from backend.app.routes.auth_manager import UserAuthManager
 from backend.app.routes.general_models import GeneralHeadersModel
 from backend.app.routes.main import MainRouterMIXIN
-from backend.app.user.models import *
-from backend.app.user.response_models import *
+from backend.app.routes.user.models import *
 
 user_router = InferringRouter()
 user_tags = ["user_router"]
