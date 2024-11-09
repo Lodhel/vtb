@@ -137,7 +137,7 @@ class UserRouter(UserRouterMIXIN):
 
 
 @cbv(user_router)
-class UserRouter(UserRouterMIXIN):
+class UserDataRouter(UserRouterMIXIN):
     @user_router.post(
         "/user_data/",
         name='create_user_data',

@@ -13,6 +13,28 @@ class CbrParams:
         self.rate_date = rate_date
 
 
+class InflationParams:
+    def __init__(
+        self,
+        rate_date: str = Query(default=None, description="информация по дате")
+    ):
+        self.rate_date = rate_date
+
+
+class InflationResponseData(BaseModel):
+    id: int
+    is_date: datetime.date
+    rate: float
+    inflation_rate: float
+
+
+class InflationResponse(BaseModel):
+    data: List[InflationResponseData]
+
+    class Config:
+        orm_mode = True
+
+
 class InflationGoal(BaseModel):
     id: int
     rate_value: float

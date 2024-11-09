@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Float, String, Date, DateTime, Boolean
+from sqlalchemy import Column, Integer, Float, String, Date, DateTime, Boolean, Numeric
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
 
@@ -125,3 +125,21 @@ class CarModel(Base):
     fuel_type = Column(String)
     average_price = Column(Float)
     status = Column(String)
+
+
+class Currency(Base):
+    __tablename__ = 'currency'
+
+    id = Column(Integer, primary_key=True)
+    is_date = Column(Date, nullable=False)
+    rate = Column(Numeric(10, 4), nullable=False)
+    currency_type = Column(String(10), default='USD')
+
+
+class Inflation(Base):
+    __tablename__ = 'inflation'
+
+    id = Column(Integer, primary_key=True)
+    is_date = Column(Date, nullable=False)
+    rate = Column(Numeric(5, 2), nullable=False)
+    inflation_rate = Column(Numeric(5, 2), nullable=False)

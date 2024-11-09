@@ -1,3 +1,32 @@
+inflation_responses = {
+    200: {
+        "description": "Success",
+        "content": {
+            "application/json": {
+                "examples": {
+                    "Успех": {
+                        "summary": "Пример успешного запроса",
+                        "value": [
+                            {
+                                "id": 1,
+                                "is_date": "2024-07-01",
+                                "rate": 18.0,
+                                "inflation_rate": 9.18
+                            },
+                            {
+                                "id": 2,
+                                "is_date": "2024-06-01",
+                                "rate": 16.0,
+                                "inflation_rate": 8.59
+                            }
+                        ]
+                    },
+                }
+            }
+        }
+    }
+}
+
 cbr_responses = {
     200: {
         "description": "Success",

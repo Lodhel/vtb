@@ -11,7 +11,7 @@ card_tags = ["card_router"]
 
 
 @cbv(card_router)
-class CarRouter(MainRouterMIXIN):
+class CardRouter(MainRouterMIXIN):
 
     def __init__(self):
         self.vtb_account_manager = VTB_AccountsManager()

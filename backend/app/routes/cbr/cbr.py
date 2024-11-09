@@ -6,10 +6,10 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.models import InflationGoal, InflationData, KeyRate, InterbankRate, CurrencyRate, MetalPrice, \
-    Reserve, LiquidityIndicator, BankRequirement
+    Reserve, LiquidityIndicator, BankRequirement, Inflation
 from backend.app.orm_sender.manager_sqlalchemy import ManagerSQLAlchemy
-from backend.app.routes.cbr.models import CbrParams, ComplexCBR_Response
-from backend.app.routes.cbr.response_models import cbr_responses
+from backend.app.routes.cbr.models import CbrParams, ComplexCBR_Response, InflationParams, InflationResponse
+from backend.app.routes.cbr.response_models import cbr_responses, inflation_responses
 from backend.app.routes.main import MainRouterMIXIN
 
 cbr_router = APIRouter()
@@ -17,7 +17,30 @@ cbr_tags = ["cbr_router"]
 
 
 @cbv(cbr_router)
-class CarRouter(MainRouterMIXIN, ManagerSQLAlchemy):
+class CbrRouter(MainRouterMIXIN, ManagerSQLAlchemy):
+
+    @cbr_router.get(
+        "/inflation/",
+        name='inflation',
+        response_model=InflationResponse,
+        responses=inflation_responses,
+        description='Получение данных по инфляции',
+        tags=cbr_tags
+    )
+    async def get(self, request: Request, response: Response, params: InflationParams = Depends()):
+        async with AsyncSession(self.engine, autoflush=False, expire_on_commit=False) as session:
+            if not params.rate_date:
+                result = await session.execute(select(Inflation))
+            else:
+                rate_date = datetime.datetime.strptime(params.rate_date, "%Y-%m-%d").date()
+                result = await session.execute(select(Inflation).filter(Inflation.is_date == rate_date))
+
+            data = result.scalars().all()
+            return data
+
+
+@cbv(cbr_router)
+class CbrRouter(MainRouterMIXIN, ManagerSQLAlchemy):
 
     @cbr_router.get(
         "/cbr/",
