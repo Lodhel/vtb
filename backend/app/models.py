@@ -17,13 +17,29 @@ accumulated_account_invitations = Table(
 )
 
 
+class UserProfile(Base):
+    __tablename__ = "user_profiles"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), unique=True)
+    income_last_month = Column(Float, nullable=True)
+    expenses_last_month = Column(Float, nullable=True)
+    savings_last_month = Column(Float, nullable=True)
+    marital_status = Column(Boolean, nullable=True)
+    children_count = Column(Integer, nullable=True)
+    education = Column(Enum('среднее', 'высшее', 'послевузовское', name="education_enum"))
+    occupation = Column(Enum('самозанятый', 'госслужащий', 'работник частной компании', name="occupation_enum"))
+
+    owner = relationship("User", back_populates="profile")
+
+
 class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=True)
     lastname = Column(String, nullable=True)
     password = Column(String, nullable=True)
-    phone_number = Column(String(255), nullable=False)
+    phone_number = Column(String(255), unique=True, nullable=False)
     email = Column(String, unique=True, index=True, nullable=True)
     created_at = Column(DateTime, server_default=func.now())
     vtb_auth = Column(String(255))
@@ -32,6 +48,7 @@ class User(Base):
     sms_code = Column(String, default='0000')
 
     accumulated_account = relationship("AccumulatedAccount", back_populates="owner", uselist=False)
+    profile = relationship("UserProfile", back_populates="owner", uselist=False)
 
 
 class AccumulatedAccount(Base):

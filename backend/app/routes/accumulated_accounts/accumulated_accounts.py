@@ -48,7 +48,7 @@ class AccumulatedAccountRouter(AccumulatedAccountMIXIN):
         headers: GeneralHeadersModel = Depends()
     ):
         async with AsyncSession(self.engine, autoflush=False, expire_on_commit=False) as session:
-            if user_profile := await self.authenticate_user(session, None, None, headers.authorization):
+            if user := await self.authenticate_user(session, None, None, headers.authorization):
                 accounts_select = await session.execute(
                     select(
                         AccumulatedAccount
@@ -57,8 +57,8 @@ class AccumulatedAccountRouter(AccumulatedAccountMIXIN):
                         AccumulatedAccount.id == accumulated_account_invitations.c.account_id
                     ).where(
                         or_(
-                            AccumulatedAccount.owner_id == user_profile.id,
-                            accumulated_account_invitations.c.invited_user_id == user_profile.id
+                            AccumulatedAccount.owner_id == user.id,
+                            accumulated_account_invitations.c.invited_user_id == user.id
                         )
                     )
                 )
@@ -86,9 +86,9 @@ class AccumulatedAccountRouter(AccumulatedAccountMIXIN):
         headers: GeneralHeadersModel = Depends()
     ):
         async with AsyncSession(self.engine, autoflush=False, expire_on_commit=False) as session:
-            if user_profile := await self.authenticate_user(session, None, None, headers.authorization):
+            if user := await self.authenticate_user(session, None, None, headers.authorization):
                 accumulated_account = AccumulatedAccount(
-                    owner_id=user_profile.id,
+                    owner_id=user.id,
                     amount=body.amount,
                     currency=body.currency
                 )
@@ -114,8 +114,8 @@ class AccumulatedAccountRouter(AccumulatedAccountMIXIN):
         headers: GeneralHeadersModel = Depends()
     ):
         async with AsyncSession(self.engine, autoflush=False, expire_on_commit=False) as session:
-            user_profile = await self.authenticate_user(session, None, None, headers.authorization)
-            if not user_profile:
+            user = await self.authenticate_user(session, None, None, headers.authorization)
+            if not user:
                 return self.make_response_by_error()
 
             account_select = await session.execute(
@@ -126,7 +126,7 @@ class AccumulatedAccountRouter(AccumulatedAccountMIXIN):
                 )
             )
             account = account_select.scalars().first()
-            if not account or account.owner_id != user_profile.id:
+            if not account or account.owner_id != user.id:
                 raise HTTPException(
                     status_code=status.HTTP_403_FORBIDDEN,
                     detail="No permission to invite users to this account"
@@ -171,8 +171,8 @@ class AccumulatedAccountRouter(AccumulatedAccountMIXIN):
         headers: GeneralHeadersModel = Depends()
     ):
         async with AsyncSession(self.engine, autoflush=False, expire_on_commit=False) as session:
-            user_profile = await self.authenticate_user(session, None, None, headers.authorization)
-            if not user_profile:
+            user = await self.authenticate_user(session, None, None, headers.authorization)
+            if not user:
                 return self.make_response_by_error()
 
             account_select = await session.execute(
@@ -184,8 +184,8 @@ class AccumulatedAccountRouter(AccumulatedAccountMIXIN):
                 ).where(
                     AccumulatedAccount.id == body.account_id,
                     or_(
-                        AccumulatedAccount.owner_id == user_profile.id,
-                        accumulated_account_invitations.c.invited_user_id == user_profile.id
+                        AccumulatedAccount.owner_id == user.id,
+                        accumulated_account_invitations.c.invited_user_id == user.id
                     )
                 )
             )
@@ -215,8 +215,8 @@ class AccumulatedAccountRouter(AccumulatedAccountMIXIN):
         headers: GeneralHeadersModel = Depends()
     ):
         async with AsyncSession(self.engine, autoflush=False, expire_on_commit=False) as session:
-            user_profile = await self.authenticate_user(session, None, None, headers.authorization)
-            if not user_profile:
+            user = await self.authenticate_user(session, None, None, headers.authorization)
+            if not user:
                 return self.make_response_by_error()
 
             account_select = await session.execute(
@@ -228,8 +228,8 @@ class AccumulatedAccountRouter(AccumulatedAccountMIXIN):
                 ).where(
                     AccumulatedAccount.id == body.account_id,
                     or_(
-                        AccumulatedAccount.owner_id == user_profile.id,
-                        accumulated_account_invitations.c.invited_user_id == user_profile.id
+                        AccumulatedAccount.owner_id == user.id,
+                        accumulated_account_invitations.c.invited_user_id == user.id
                     )
                 )
             )

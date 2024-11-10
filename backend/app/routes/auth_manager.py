@@ -1,9 +1,8 @@
 from secrets import token_hex
 
 from fastapi.security import OAuth2PasswordBearer
-from loguru import logger
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, or_
 
 from passlib.context import CryptContext
 
@@ -27,7 +26,6 @@ class UserAuthManager:
     async def authenticate_user(
         cls, session: AsyncSession, phone_number: str | None, password: str | None, token_auth: str | None
     ) -> User | None:
-        logger.info(token_auth)
         if not password:
             return await cls.get_userprofile_by_token(session, token_auth)
 
@@ -52,8 +50,9 @@ class UserAuthManager:
     @staticmethod
     async def get_userprofile_by_token(session: AsyncSession, token_auth: str) -> User | None:
         if token_auth:
-            logger.info(token_auth)
-            user_select = await session.execute(select(User).filter_by(token_auth=token_auth))
+            user_select = await session.execute(
+                select(User).filter(or_(User.token_auth == token_auth, User.vtb_auth == token_auth))
+            )
             return user_select.scalars().first()
 
         return None
