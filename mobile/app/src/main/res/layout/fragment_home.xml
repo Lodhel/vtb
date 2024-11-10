@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainPart"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_base900"
+    android:orientation="vertical"
+    app:layout_constraintTop_toBottomOf="@id/profile">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_base800"
+        android:paddingBottom="24dp"
+        app:layout_constraintTop_toTopOf="@id/mainPart">
+
+        <TextView
+            android:id="@+id/accountTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:text="Мастер счет в рублях"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/accountDots"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/account_dots"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/accountTitle" />
+
+        <ImageView
+            android:id="@+id/addAccountBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="@android:color/transparent"
+            android:src="@drawable/add_btn_outlined"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/accountDots" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/replenishAccountBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rounded_blue_btn"
+            android:text="Пополнить"
+            android:textAllCaps="false"
+            android:textColor="@color/blue400"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/transferAccountBtn"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/addAccountBtn" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/transferAccountBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rounded_blue_btn"
+            android:text="Перевести"
+            android:textAllCaps="false"
+            android:textColor="@color/blue400"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/replenishAccountBtn"
+            app:layout_constraintTop_toBottomOf="@id/addAccountBtn" />
+
+        <TextView
+            android:id="@+id/qrBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            android:drawableTop="@drawable/qr"
+            android:drawablePadding="4dp"
+            android:text="QR и оплата\nпо фото"
+            android:textAlignment="center"
+            android:textColor="@color/blue400"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@id/sbpBtn"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/replenishAccountBtn" />
+
+        <TextView
+            android:id="@+id/sbpBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            android:drawableTop="@drawable/sbp"
+            android:drawablePadding="4dp"
+            android:text="По номеру\nтелефона"
+            android:textAlignment="center"
+            android:textColor="@color/blue400"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@id/mobileBtn"
+            app:layout_constraintStart_toEndOf="@id/qrBtn"
+            app:layout_constraintTop_toBottomOf="@id/replenishAccountBtn" />
+
+        <TextView
+            android:id="@+id/mobileBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            android:drawableTop="@drawable/mobile"
+            android:drawablePadding="4dp"
+            android:text="Оплата\nмобильного"
+            android:textAlignment="center"
+            android:textColor="@color/blue400"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/sbpBtn"
+            app:layout_constraintTop_toBottomOf="@id/replenishAccountBtn" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rounded_base800"
+        android:text="Доступные средства"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rounded_base800"
+        android:paddingBottom="24dp"
+        app:layout_constraintTop_toTopOf="@id/mainPart">
+
+        <TextView
+            android:id="@+id/cardsTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:text="Карты и счета"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/cardImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/card_image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardsTitle" />
+
+        <TextView
+            android:id="@+id/cardName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Зарплатная карта"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/cardImage"
+            app:layout_constraintTop_toTopOf="@id/cardImage" />
+
+        <ImageView
+            android:id="@+id/cardDots"
+            android:layout_width="58dp"
+            android:layout_height="8dp"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/account_dots"
+            app:layout_constraintBottom_toBottomOf="@id/cardImage"
+            app:layout_constraintStart_toEndOf="@id/cardImage"
+            app:tint="@color/blue400" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:drawableLeft="@drawable/add_btn"
+            android:drawablePadding="16dp"
+            android:gravity="center_vertical"
+            android:text="Новая карта или новый счет"
+            android:textColor="@color/blue400"
+            app:layout_constraintTop_toBottomOf="@id/cardDots" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rounded_base800"
+        android:paddingBottom="24dp"
+        app:layout_constraintTop_toTopOf="@id/mainPart">
+
+        <TextView
+            android:id="@+id/goalsTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:text="Копилка"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/goalsRV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:orientation="horizontal"
+            tools:listitem="@layout/item_goal"
+            app:layout_constraintTop_toBottomOf="@id/goalsTitle"/>
+
+        <TextView
+            android:id="@+id/goalsAddFirstBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:drawableLeft="@drawable/add_btn"
+            android:drawablePadding="16dp"
+            android:gravity="center_vertical"
+            android:text="Новая цель или новый товар"
+            android:textColor="@color/blue400"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintTop_toBottomOf="@id/goalsTitle" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/goalsAddBtn"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_margin="16dp"
+            android:background="@drawable/rounded_blue_btn"
+            android:text="Добавить цель"
+            android:textAllCaps="false"
+            android:textColor="@color/blue400"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/goalsRV" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>
