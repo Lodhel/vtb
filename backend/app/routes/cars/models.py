@@ -1,13 +1,13 @@
 from fastapi import Query
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class CarParams:
     def __init__(
         self,
-        model_car: str = Query(None, description="модель авто"),
-        year: int = Query(None, description="год выпуска"),
-        transmission_type: str = Query(None, description="тип КПП")
+        model_car: str = Query(None, description="Модель автомобиля, например, 'Toyota Camry'"),
+        year: int = Query(None, description="Год выпуска автомобиля"),
+        transmission_type: str = Query(None, description="Тип коробки передач, например, 'Автомат' или 'Механика'")
     ):
         self.model_car = model_car
         self.year = year
@@ -15,11 +15,11 @@ class CarParams:
 
 
 class CarResponse(BaseModel):
-    id: int
-    model_car: str
-    year: int
-    transmission_type: str
-    body_type: str
-    fuel_type: str
-    average_price: int
-    status: str
+    id: int = Field(..., description="Уникальный идентификатор автомобиля")
+    model_car: str = Field(..., description="Модель автомобиля")
+    year: int = Field(..., description="Год выпуска автомобиля")
+    transmission_type: str = Field(..., description="Тип коробки передач, например, 'Автомат' или 'Механика'")
+    body_type: str = Field(..., description="Тип кузова, например, 'Седан' или 'Внедорожник'")
+    fuel_type: str = Field(..., description="Тип топлива, например, 'Бензин' или 'Дизель'")
+    average_price: int = Field(..., description="Средняя цена автомобиля в рублях")
+    status: str = Field(..., description="Статус автомобиля, например, 'Новый' или 'С пробегом'")
