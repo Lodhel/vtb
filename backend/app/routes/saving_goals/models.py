@@ -25,3 +25,4 @@ class GoalResponse(BaseModel):
     target_amount: float = Field(..., description="Желаемая сумма для накопления")
     recommended_contribution: float = Field(..., description="Рекомендуемая сумма вклада на следующий месяц")
     progress_percentage: float = Field(..., description="Процент выполнения цели на данный момент")
+    rate_date: int = Field(..., description="Ожидаемая дата достижения цели")

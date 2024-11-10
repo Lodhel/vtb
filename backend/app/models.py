@@ -43,6 +43,7 @@ class SavingGoal(Base):
     target_amount = Column(Float, nullable=False)
     recommended_contribution = Column(Float, nullable=True)
     progress_percentage = Column(Float, nullable=True, default=0.0)
+    months_remaining = Column(Integer, default=10)
 
     user = relationship("User", back_populates="saving_goals")
     account = relationship("AccumulatedAccount", back_populates="saving_goals")

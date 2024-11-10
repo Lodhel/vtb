@@ -4,6 +4,9 @@ from sqlalchemy import or_
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
+from datetime import date
+from dateutil.relativedelta import relativedelta
+
 from backend.app.models import User, AccumulatedAccount, SavingGoal
 from backend.app.orm_sender.manager_sqlalchemy import ManagerSQLAlchemy
 from backend.app.routes.auth_manager import UserAuthManager
@@ -132,9 +135,11 @@ class SavingGoalCBV(UserAuthManager, MainRouterMIXIN, ManagerSQLAlchemy):
 
     @staticmethod
     def get_data_by_response_created(goal: SavingGoal) -> dict:
+        rate_date = date.today() + relativedelta(months=goal.months_remaining)
         return {
             "description": goal.description,
             "target_amount": goal.target_amount,
             "recommended_contribution": goal.recommended_contribution,
-            "progress_percentage": goal.progress_percentage
+            "progress_percentage": goal.progress_percentage,
+            "rate_date": rate_date.strftime("%Y-%m-%d")
         }
