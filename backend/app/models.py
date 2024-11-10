@@ -33,6 +33,21 @@ class UserProfile(Base):
     owner = relationship("User", back_populates="profile")
 
 
+class SavingGoal(Base):
+    __tablename__ = "saving_goals"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    account_id = Column(Integer, ForeignKey("accumulated_accounts.id"), nullable=False)
+    description = Column(String, nullable=False)
+    target_amount = Column(Float, nullable=False)
+    recommended_contribution = Column(Float, nullable=True)
+    progress_percentage = Column(Float, nullable=True, default=0.0)
+
+    user = relationship("User", back_populates="saving_goals")
+    account = relationship("AccumulatedAccount", back_populates="saving_goals")
+
+
 class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, index=True)
@@ -49,6 +64,7 @@ class User(Base):
 
     accumulated_account = relationship("AccumulatedAccount", back_populates="owner", uselist=False)
     profile = relationship("UserProfile", back_populates="owner", uselist=False)
+    saving_goals = relationship("SavingGoal", back_populates="user")
 
 
 class AccumulatedAccount(Base):
@@ -67,6 +83,7 @@ class AccumulatedAccount(Base):
     created_at = Column(DateTime, server_default=func.now())
 
     owner = relationship("User", back_populates="accumulated_account")
+    saving_goals = relationship("SavingGoal", back_populates="account")
     invited_users = relationship(
         "User",
         secondary=accumulated_account_invitations,
