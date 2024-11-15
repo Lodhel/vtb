@@ -1,19 +1,20 @@
 import datetime
 from pydantic import BaseModel, Field
 from typing import List, Optional
-from enum import Enum
 
-
-class CurrencyType(str, Enum):
-    RUB = "RUB"
-    USD = "USD"
-    EUR = "EUR"
-    CNY = "CNY"
+from backend.app.models import UserRole, AccumulatedAccount
 
 
 class AccumulatedAccountCreate(BaseModel):
     amount: Optional[float] = Field(0.0, description="Сумма на счете, по умолчанию 0")
-    currency: CurrencyType = Field(CurrencyType.RUB, description="Валюта счета (RUB, USD, EUR, CNY)")
+    currency: AccumulatedAccount.CurrencyType = Field(
+        AccumulatedAccount.CurrencyType.RUB,
+        description="Валюта счета (RUB, USD, EUR, CNY)"
+    )
+    account_type: AccumulatedAccount.AccountType = Field(
+        AccumulatedAccount.AccountType.PERSONAL,
+        description="Тип счета (Личный, Совместный, Счет для детей, Краудфандинг, Инвестиционный, Социальный)"
+    )
 
     class Config:
         orm_mode = True
@@ -21,7 +22,13 @@ class AccumulatedAccountCreate(BaseModel):
 
 class AccumulatedAccountInvite(BaseModel):
     account_id: int = Field(..., description="ID накопительного счета")
-    invited_user_id: int = Field(..., description="ID пользователя, которого приглашают к счету")
+    invited_user_phone: str = Field(..., description="Телефон пользователя, которого приглашают к счету")
+    role: UserRole = Field(default=UserRole.VIEWER, description="Роль приглашенного пользователя")
+
+
+class ConfirmInviteRequest(BaseModel):
+    account_id: int = Field(..., description="ID накопительного счета")
+    action: str = Field(..., description="Действие: confirm или reject")
 
 
 class BalanceOperation(BaseModel):
@@ -33,7 +40,8 @@ class AccumulatedAccountData(BaseModel):
     id: int = Field(..., description="Уникальный идентификатор счета")
     owner_id: int = Field(..., description="ID владельца счета")
     amount: float = Field(..., description="Текущая сумма на счете")
-    currency: CurrencyType = Field(..., description="Валюта счета")
+    currency: AccumulatedAccount.CurrencyType = Field(..., description="Валюта счета")
+    account_type: AccumulatedAccount.AccountType = Field(..., description="Тип счета")
     created_at: datetime.datetime = Field(..., description="Дата создания счета")
 
     class Config:

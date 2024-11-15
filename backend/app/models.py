@@ -9,11 +9,25 @@ from enum import Enum as PyEnum
 Base = declarative_base()
 
 
+class UserRole(PyEnum):
+    VIEWER = "просмотр"
+    CONTRIBUTOR = "вкладчик"
+    FULL_ACCESS = "полный доступ"
+
+
+class InvitationStatus(PyEnum):
+    PENDING = "ожидает подтверждения"
+    CONFIRMED = "подтверждено"
+    REJECTED = "отклонено"
+
+
 accumulated_account_invitations = Table(
     "accumulated_account_invitations",
     Base.metadata,
     Column("account_id", Integer, ForeignKey("accumulated_accounts.id"), primary_key=True),
-    Column("invited_user_id", Integer, ForeignKey("users.id"), primary_key=True)
+    Column("invited_user_id", Integer, ForeignKey("users.id"), primary_key=True),
+    Column("role", Enum(UserRole), nullable=False, default=UserRole.VIEWER),
+    Column("status", Enum(InvitationStatus), nullable=False, default=InvitationStatus.PENDING)
 )
 
 
@@ -71,6 +85,14 @@ class User(Base):
 class AccumulatedAccount(Base):
     __tablename__ = "accumulated_accounts"
 
+    class AccountType(PyEnum):
+        PERSONAL = "Личный"
+        JOINT = "Совместный"
+        CHILD = "Счет для детей"
+        CROWD_FUNDING = "Краудфандинг"
+        INVESTMENT = "Инвестиционный"
+        SOCIAL = "Социальный"
+
     class CurrencyType(PyEnum):
         RUB = "RUB"
         USD = "USD"
@@ -82,6 +104,7 @@ class AccumulatedAccount(Base):
     amount = Column(Float, default=0.0)
     currency = Column(Enum(CurrencyType), nullable=False, default=CurrencyType.RUB)
     created_at = Column(DateTime, server_default=func.now())
+    account_type = Column(Enum(AccountType), nullable=False, default=AccountType.JOINT)
 
     owner = relationship("User", back_populates="accumulated_account")
     saving_goals = relationship("SavingGoal", back_populates="account")
