@@ -105,7 +105,7 @@ class AccumulatedAccountRouter(AccumulatedAccountMIXIN):
     @accumulated_accounts_router.post(
         "/accumulated_accounts/invite",
         name='invite_to_accumulated_account',
-        response_model=AccumulatedAccountData,
+        response_model=AccumulatedAccountInviteData,
         responses=accumulated_account_responses,
         description='Приглашение другого пользователя в счёт',
         tags=accumulated_accounts_tags
@@ -158,7 +158,10 @@ class AccumulatedAccountRouter(AccumulatedAccountMIXIN):
             await session.flush()
             await session.commit()
 
-            return self.get_data_by_response_created(account)
+            return self.get_data({
+                'id': account.id,
+                'success': True
+            })
 
     @accumulated_accounts_router.post(
         "/accumulated_accounts/invite/confirm",

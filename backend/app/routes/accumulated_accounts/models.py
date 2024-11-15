@@ -48,6 +48,11 @@ class AccumulatedAccountData(BaseModel):
         orm_mode = True
 
 
+class AccumulatedAccountInviteData(BaseModel):
+    id: int = Field(..., description="Уникальный идентификатор счета")
+    success: bool = Field(..., description="Успешность запроса")
+
+
 class AccumulatedAccountResponse(BaseModel):
     data: List[AccumulatedAccountData] = Field(..., description="Список накопительных счетов")
 
