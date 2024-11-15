@@ -61,7 +61,8 @@ class AccumulatedAccountRouter(AccumulatedAccountMIXIN):
                         or_(
                             AccumulatedAccount.owner_id == user.id,
                             accumulated_account_invitations.c.invited_user_id == user.id
-                        )
+                        ),
+                        accumulated_account_invitations.c.status == 'CONFIRMED'
                     )
                 )
                 accounts = accounts_select.scalars().all()
