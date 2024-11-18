@@ -1,7 +1,9 @@
 from fastapi import FastAPI
+from fastapi_utils.tasks import repeat_every
 from starlette.middleware.cors import CORSMiddleware
 
 from backend.app.routes import router
+from backend.app.tasks.calculate_progress_percentage import CalculateManager
 
 
 def create_app() -> FastAPI:
@@ -21,6 +23,14 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+    calculate_progress_percentage_manager = CalculateManager()
+
+    @app.on_event("startup")
+    @repeat_every(seconds=60)
+    async def run_calculate_progress_percentage():
+        await calculate_progress_percentage_manager.run()
+        return
 
     return app
 

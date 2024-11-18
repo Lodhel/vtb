@@ -1,5 +1,7 @@
 from pydantic import BaseModel, Field
 
+from backend.app.models import UserProfile
+
 
 class UserProfileRequest(BaseModel):
     income_last_month: float = Field(..., description="Доход за последний месяц")
@@ -7,8 +9,14 @@ class UserProfileRequest(BaseModel):
     savings_last_month: float = Field(..., description="Сумма, которую удалось отложить за последний месяц")
     marital_status: bool = Field(..., description="Семейное положение: True - женат/замужем, False - неженат/не замужем")
     children_count: int = Field(..., description="Количество детей")
-    education: str = Field(..., description="Уровень образования: 'среднее', 'высшее' или 'послевузовское'")
-    occupation: str = Field(..., description="Занятость: 'самозанятый', 'госслужащий', 'работник частной компании'")
+    education: UserProfile.EducationEnum = Field(
+        UserProfile.EducationEnum.MIDDLE,
+        description="Уровень образования: 'среднее', 'высшее' или 'послевузовское'"
+    )
+    occupation: UserProfile.OccupationEnum = Field(
+        UserProfile.OccupationEnum.PRIVATE_COMPANY_EMPLOYEE,
+        description="Занятость: 'самозанятый', 'госслужащий', 'работник частной компании'"
+    )
 
 
 class UserProfileResponse(BaseModel):

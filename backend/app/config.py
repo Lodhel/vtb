@@ -12,3 +12,8 @@ DATABASE_PORT = os.getenv('SQL_PORT')
 CLIENT_SECRET = os.getenv('CLIENT_SECRET')
 
 STATIC_DIR: str = f'{os.path.dirname(os.path.abspath(__file__))}/static'
+
+KAFKA_BOOTSTRAP_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS")
+PRODUCE_TOPIC = os.getenv("WEB_TOPIC")
+
+CLICKHOUSE_URL = os.getenv("CLICKHOUSE_URL")

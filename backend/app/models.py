@@ -34,6 +34,16 @@ accumulated_account_invitations = Table(
 class UserProfile(Base):
     __tablename__ = "user_profiles"
 
+    class EducationEnum(PyEnum):
+        MIDDLE = "среднее"
+        HIGHER = "высшее"
+        POSTGRADUATE = "послевузовское"
+
+    class OccupationEnum(PyEnum):
+        SELF_EMPLOYED = "самозанятый"
+        GOVERNMENT_EMPLOYEE = "госслужащий"
+        PRIVATE_COMPANY_EMPLOYEE = "работник частной компании"
+
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), unique=True)
     income_last_month = Column(Float, nullable=True)
@@ -41,8 +51,8 @@ class UserProfile(Base):
     savings_last_month = Column(Float, nullable=True)
     marital_status = Column(Boolean, nullable=True)
     children_count = Column(Integer, nullable=True)
-    education = Column(Enum('среднее', 'высшее', 'послевузовское', name="education_enum"))
-    occupation = Column(Enum('самозанятый', 'госслужащий', 'работник частной компании', name="occupation_enum"))
+    education = Column(Enum(EducationEnum, name="education_enum"))
+    occupation = Column(Enum(OccupationEnum, name="occupation_enum"))
 
     owner = relationship("User", back_populates="profile")
 

@@ -1,3 +1,4 @@
+import json
 from fastapi import APIRouter, Depends
 from fastapi_utils.cbv import cbv
 from starlette.requests import Request
@@ -5,6 +6,7 @@ from starlette.responses import Response
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from backend.app.event_manager.manager_kafka import ManagerKafka
 from backend.app.models import UserProfile, User
 from backend.app.orm_sender.manager_sqlalchemy import ManagerSQLAlchemy
 from backend.app.routes.auth_manager import UserAuthManager
@@ -92,8 +94,12 @@ class UserVTBRouter(UserAuthManager, MainRouterMIXIN, ManagerSQLAlchemy):
                 session.add(profile)
 
             await session.commit()
-
             data = self.get_data_by_response_created(profile)
+
+            async with ManagerKafka().producer as producer:
+                message_to_produce = json.dumps(data).encode(encoding="utf-8")
+                await producer.send(value=message_to_produce)
+
             result = self.get_data(data)
             return result
 
@@ -106,6 +112,6 @@ class UserVTBRouter(UserAuthManager, MainRouterMIXIN, ManagerSQLAlchemy):
             'savings_last_month': profile.savings_last_month,
             'marital_status': profile.marital_status,
             'children_count': profile.children_count,
-            'education': profile.education,
-            'occupation': profile.occupation
+            'education': profile.education.value,
+            'occupation': profile.occupation.value
         }

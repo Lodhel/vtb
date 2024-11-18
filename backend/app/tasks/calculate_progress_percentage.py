@@ -1,9 +1,17 @@
 import pandas as pd
-import joblib  
+import joblib
+
+from backend.app.event_manager.manager_kafka import ManagerKafka
 
 
 class CalculateManager:
     model_path = 'xgboost_model.joblib'
+
+    def __init__(self):
+        self.consumer = ManagerKafka().consumer
+
+    async def run(self):
+        await self.consumer.consumption()   # TODO редактировать на кликхаус
 
     def calculate(self):
         loaded_model = self.load_model(self.model_path)

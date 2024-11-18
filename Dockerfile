@@ -1,17 +1,21 @@
-FROM python:3.12-alpine
+FROM python:3.12-slim
 
-RUN apk add --no-cache tzdata
-ENV TZ Europe/Moscow
 
-WORKDIR /backend/app
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc g++ python3-dev libssl-dev libffi-dev libsasl2-dev build-essential \
+    tzdata && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+
+ENV TZ=Europe/Moscow
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-RUN apk add build-base
-RUN python3 -m pip install --upgrade pip
+WORKDIR /backend/app
 
+RUN python3 -m pip install --no-cache-dir --upgrade pip setuptools wheel
 COPY backend/requirements.txt ./
-RUN pip install -r requirements.txt
 
+RUN pip install --no-cache-dir -r requirements.txt
 COPY backend/app/ ./
