@@ -1,13 +1,11 @@
 import json
 from fastapi import APIRouter, Depends
 from fastapi_utils.cbv import cbv
-from loguru import logger
 from starlette.requests import Request
 from starlette.responses import Response
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.app.config import KAFKA_BOOTSTRAP_SERVERS
 from backend.app.event_manager.manager_kafka import ManagerKafka
 from backend.app.models import UserProfile, User
 from backend.app.orm_sender.manager_sqlalchemy import ManagerSQLAlchemy
@@ -98,13 +96,9 @@ class UserVTBRouter(UserAuthManager, MainRouterMIXIN, ManagerSQLAlchemy):
             await session.commit()
             data = self.get_data_by_response_created(profile)
 
-            try:
-                async with ManagerKafka().producer as producer:
-                    message_to_produce = json.dumps(data).encode(encoding="utf-8")
-                    await producer.send(value=message_to_produce)
-            except Exception as ex:
-                logger.info(ex)
-                logger.info(KAFKA_BOOTSTRAP_SERVERS)
+            async with ManagerKafka().producer as producer:
+                message_to_produce = json.dumps(data).encode(encoding="utf-8")
+                await producer.send(value=message_to_produce)
 
             result = self.get_data(data)
             return result
