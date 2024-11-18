@@ -18,7 +18,6 @@ services:
               memory: 20M
         depends_on:
           - db_mvp
-          - clickhouse
         ports:
             - 2309:2309
 
@@ -52,16 +51,5 @@ services:
         ports:
             - 9092:9092
 
-    clickhouse:
-        image: yandex/clickhouse-server:latest
-        volumes:
-            - clickhouse_data:/var/lib/clickhouse
-        env_file:
-            - backend/.env
-        ports:
-            - "8123:8123"
-            - "9000:9000"
-
 volumes:
     postgres_data:
-    clickhouse_data:
