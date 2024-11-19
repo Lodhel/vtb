@@ -45,6 +45,7 @@ services:
 
     broker:
         image: apache/kafka:latest
+        restart: always
         container_name: broker
         env_file:
             - backend/.env

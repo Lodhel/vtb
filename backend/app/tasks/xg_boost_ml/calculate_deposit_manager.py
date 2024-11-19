@@ -1,5 +1,6 @@
 import datetime
 import json
+import os
 
 import pandas as pd
 import joblib
@@ -10,9 +11,14 @@ from backend.app.tasks.xg_boost_ml.schemas import DepositSchema
 
 
 class CalculateDepositManager:
-    model_path = 'xgboost_model.joblib'
 
     def __init__(self):
+        self.model_path: str = 'backend/ml_models/xgboost_model.joblib'
+        if os.path.exists(self.model_path):
+            print(f"File found at: {os.path.abspath(self.model_path)}")
+        else:
+            print(f"File not found at: {os.path.abspath(self.model_path)}")
+
         self.consumer = ManagerKafka().consumer
         self.education_value_default: str = 'среднее'
         self.occupation_value_default: str = 'самозанятый'
