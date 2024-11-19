@@ -18,6 +18,7 @@ services:
               memory: 20M
         depends_on:
           - db_mvp
+          - broker
         ports:
             - 2309:2309
 
