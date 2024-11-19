@@ -27,6 +27,7 @@ class CalculateDepositManager:
             async for data_row in consumer.consumption():
                 date_now: datetime.date = datetime.date.today()
                 data_profile: dict = json.loads(data_row['value'])
+                logger.info(data_profile)
                 deposit_schema: DepositSchema = DepositSchema(**{
                     'income': data_profile['income_last_month'],
                     'expense': data_profile['expenses_last_month'],
@@ -43,12 +44,12 @@ class CalculateDepositManager:
                     'year': date_now.year,
                     'month': date_now.month
                 })
-                deposit = self.calculate(deposit_schema)
-                logger.info({
-                    'user_id': data_profile['user_id'],
-                    'deposit': deposit,
-                    'rate_date': f'{date_now.year}.{date_now.month}'
-                })
+                # deposit = self.calculate(deposit_schema)
+                # logger.info({
+                #     'user_id': data_profile['user_id'],
+                #     'deposit': deposit,
+                #     'rate_date': f'{date_now.year}.{date_now.month}'
+                # })
 
     def calculate(self, deposit_schema: DepositSchema):
         logger.info('calculate start')

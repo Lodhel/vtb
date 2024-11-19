@@ -58,6 +58,7 @@ services:
             - backend/.env
         ports:
             - 9092:9092
+            - 9093:9093
         logging:
           driver: none
 

@@ -1,6 +1,7 @@
 import json
 from fastapi import APIRouter, Depends
 from fastapi_utils.cbv import cbv
+from loguru import logger
 from starlette.requests import Request
 from starlette.responses import Response
 from sqlalchemy import select
@@ -96,9 +97,12 @@ class UserVTBRouter(UserAuthManager, MainRouterMIXIN, ManagerSQLAlchemy):
             await session.commit()
             data = self.get_data_by_response_created(profile)
 
-            async with ManagerKafka().producer as producer:
-                message_to_produce = json.dumps(data).encode(encoding="utf-8")
-                await producer.send(value=message_to_produce)
+            try:
+                async with ManagerKafka().producer as producer:
+                    message_to_produce = json.dumps(data).encode(encoding="utf-8")
+                    await producer.send(value=message_to_produce)
+            except Exception as ex:
+                logger.info(ex)
 
             result = self.get_data(data)
             return result
