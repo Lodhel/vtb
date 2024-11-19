@@ -137,7 +137,7 @@ class AccumulatedAccountRouter(AccumulatedAccountMIXIN):
                 session.add(accumulated_account)
                 await session.commit()
                 await session.refresh(accumulated_account)
-                data: dict = self.get_data_by_response_created(accumulated_account)
+                data: dict = await self.get_data_by_response_created(session, accumulated_account)
                 return self.get_data(data)
 
             return self.make_response_by_error()
@@ -271,7 +271,7 @@ class AccumulatedAccountRouter(AccumulatedAccountMIXIN):
             await session.commit()
 
             if body.action == "confirm":
-                data = self.get_data_by_response_created(account)
+                data = await self.get_data_by_response_created(session, account)
             elif body.action == "reject":
                 data = {
                     'success': True,
@@ -330,7 +330,7 @@ class AccumulatedAccountRouter(AccumulatedAccountMIXIN):
             account.amount += body.amount
             await session.commit()
 
-            data = self.get_data_by_response_created(account)
+            data = await self.get_data_by_response_created(session, account)
             return self.get_data(data)
 
     @accumulated_accounts_router.post(
@@ -391,7 +391,8 @@ class AccumulatedAccountRouter(AccumulatedAccountMIXIN):
             account.amount -= body.amount
             await session.commit()
 
-            return self.get_data_by_response_created(account)
+            data = await self.get_data_by_response_created(session, account)
+            return self.get_data(data)
 
     @staticmethod
     async def check_permissions(accumulated_account_schema: AccumulatedAccountSchema) -> None:
