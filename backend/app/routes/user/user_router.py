@@ -25,10 +25,10 @@ class UserRouterMIXIN(UserAuthManager, MainRouterMIXIN, ManagerSQLAlchemy):
     def get_data_by_response_created(user: User) -> dict:
         return {
             'id': user.id,
-            'name': user.name,
-            'lastname': user.lastname,
+            'name': user.name if user.name else '',
+            'lastname': user.lastname if user.lastname else '',
             'phone_number': user.phone_number,
-            'email': user.email,
+            'email': user.email if user.email else '',
             'vtb_auth': user.vtb_auth,
             'token_auth': user.token_auth
         }
@@ -109,7 +109,7 @@ class UserRouter(UserRouterMIXIN):
             if user and body.sms_code == user.sms_code:
                 user.is_active = True
                 await session.commit()
-                return self.get_data_by_response_created(user)
+                return self.get_data(self.get_data_by_response_created(user))
 
         return self.make_response_by_error()
 
