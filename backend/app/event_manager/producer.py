@@ -22,28 +22,14 @@ class AIOWebProducer:
             await self._producer.stop()
             self._producer = None
 
-    async def start(self):
-        if self._producer is None:
-            self._producer = AIOKafkaProducer(
-                bootstrap_servers=KAFKA_BOOTSTRAP_SERVERS
-            )
-        if not self._producer._closed:
-            await self._producer.start()
-
-    async def stop(self):
-        if self._producer and not self._producer._closed:
-            await self._producer.stop()
-            self._producer = None
-
     async def send(self, value: bytes):
         if self._producer is None or self._producer._closed:
-            await self.start()
+            raise RuntimeError("Producer is not running. Use 'async with' or call 'start' first.")
         try:
             await self._producer.send(
                 topic=self._produce_topic,
                 value=value,
             )
         except Exception as e:
-            logger.info(f"Error while sending message: {e}")
-        finally:
-            await self.stop()
+            logger.error(f"Ошибка при отправке сообщения: {e}")
+            raise

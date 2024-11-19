@@ -4,34 +4,40 @@ from loguru import logger
 from backend.app.config import PRODUCE_TOPIC, KAFKA_BOOTSTRAP_SERVERS
 
 
-class AIOWebConsumer(object):
+class AIOWebConsumer:
     def __init__(self):
+        self._produce_topic = PRODUCE_TOPIC
+        self._consumer = None
 
-        self.__produce_topic: str = PRODUCE_TOPIC
-        self.__consumer: AIOKafkaConsumer = AIOKafkaConsumer(
-            self.__produce_topic,
-            bootstrap_servers=KAFKA_BOOTSTRAP_SERVERS
-        )
+    async def __aenter__(self):
+        if self._consumer is None:
+            self._consumer = AIOKafkaConsumer(
+                self._produce_topic,
+                bootstrap_servers=KAFKA_BOOTSTRAP_SERVERS
+            )
+            await self._consumer.start()
+        return self
 
-    async def start(self) -> None:
-        await self.__consumer.start()
-
-    async def stop(self) -> None:
-        await self.__consumer.stop()
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        if self._consumer:
+            await self._consumer.stop()
+            self._consumer = None
 
     async def consumption(self):
-        await self.start()
+        if self._consumer is None or self._consumer._closed:
+            raise RuntimeError("Consumer is not running. Use 'async with'")
         try:
-            async for msg in self.__consumer:
-                data_log: dict = {
+            async for msg in self._consumer:
+                data_log = {
                     'topic': msg.topic,
                     'partition': msg.partition,
                     'offset': msg.offset,
                     'key': msg.key,
-                    'value': msg.value,
+                    'value': msg.value.decode('utf-8') if msg.value else None,
                     'timestamp': msg.timestamp
                 }
                 logger.info(data_log)
                 yield data_log
-        finally:
-            await self.stop()
+        except Exception as e:
+            logger.error(f"Ошибка при обработке сообщений: {e}")
+            raise

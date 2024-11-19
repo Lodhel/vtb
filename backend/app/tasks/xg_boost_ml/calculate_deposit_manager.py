@@ -19,36 +19,36 @@ class CalculateDepositManager:
         else:
             print(f"File not found at: {os.path.abspath(self.model_path)}")
 
-        self.consumer = ManagerKafka().consumer
         self.education_value_default: str = 'среднее'
         self.occupation_value_default: str = 'самозанятый'
 
     async def run(self):
-        async for data_row in self.consumer.consumption():
-            date_now: datetime.date = datetime.date.today()
-            data_profile: dict = json.loads(data_row['value'])
-            deposit_schema: DepositSchema = DepositSchema(**{
-                'income': data_profile['income_last_month'],
-                'expense': data_profile['expenses_last_month'],
-                'count_child': data_profile['children_count'],
-                'curs_dollar': 86,
-                'curs_euro': 94,
-                'curs_uan': 12,
-                'oil_brent': 70,
-                'rate': 5,
-                'inf': 3,
-                'education': data_profile['education'],
-                'work': data_profile['occupation'],
-                'married': data_profile['marital_status'],
-                'year': date_now.year,
-                'month': date_now.month
-            })
-            deposit = self.calculate(deposit_schema)
-            logger.info({
-                'user_id': data_profile['user_id'],
-                'deposit': deposit,
-                'rate_date': f'{date_now.year}.{date_now.month}'
-            })
+        async with ManagerKafka().consumer as consumer:
+            async for data_row in consumer.consumption():
+                date_now: datetime.date = datetime.date.today()
+                data_profile: dict = json.loads(data_row['value'])
+                deposit_schema: DepositSchema = DepositSchema(**{
+                    'income': data_profile['income_last_month'],
+                    'expense': data_profile['expenses_last_month'],
+                    'count_child': data_profile['children_count'],
+                    'curs_dollar': 86,
+                    'curs_euro': 94,
+                    'curs_uan': 12,
+                    'oil_brent': 70,
+                    'rate': 5,
+                    'inf': 3,
+                    'education': data_profile['education'],
+                    'work': data_profile['occupation'],
+                    'married': data_profile['marital_status'],
+                    'year': date_now.year,
+                    'month': date_now.month
+                })
+                deposit = self.calculate(deposit_schema)
+                logger.info({
+                    'user_id': data_profile['user_id'],
+                    'deposit': deposit,
+                    'rate_date': f'{date_now.year}.{date_now.month}'
+                })
 
     def calculate(self, deposit_schema: DepositSchema):
         logger.info('calculate start')
