@@ -6,9 +6,8 @@ services:
         build: ""
         command:
             - /bin/sh
-                - -c
-                - |
-                echo "wait for 30 seconds"
+            - -c
+            - |
                 sleep 30
                 uvicorn backend.run:application --host 0.0.0.0 --port 2309 --reload --timeout-keep-alive 1000
         volumes:
