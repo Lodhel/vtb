@@ -45,25 +45,28 @@ class CalculateDepositManager:
             })
 
     def calculate(self, deposit_schema: DepositSchema):
+        logger.info('calculate start')
         loaded_model = self.load_model(self.model_path)
+        logger.info('loaded_model complete')
 
         new_data = pd.DataFrame({
-            'income': deposit_schema.income,
-            'expense': deposit_schema.expense,
-            'count_child': deposit_schema.count_child,
-            'curs_dollar': deposit_schema.curs_dollar,
-            'curs_euro': deposit_schema.curs_euro,
-            'curs_uan': deposit_schema.curs_uan,
-            'oil_brent': deposit_schema.oil_brent,
-            'rate': deposit_schema.rate,
-            'inf': deposit_schema.inf,
-            'education': deposit_schema.education,
-            'work': deposit_schema.work,
-            'married': deposit_schema.married,
-            'year': deposit_schema.year,
-            'month': deposit_schema.month
+            'income': [deposit_schema.income],
+            'expense': [deposit_schema.expense],
+            'count_child': [deposit_schema.count_child],
+            'curs_dollar': [deposit_schema.curs_dollar],
+            'curs_euro': [deposit_schema.curs_euro],
+            'curs_uan': [deposit_schema.curs_uan],
+            'oil_brent': [deposit_schema.oil_brent],
+            'rate': [deposit_schema.rate],
+            'inf': [deposit_schema.inf],
+            'education': [deposit_schema.education],
+            'work': [deposit_schema.work],
+            'married': [deposit_schema.married],
+            'year': [deposit_schema.year],
+            'month': [deposit_schema.month]
         })
         predicted_savings = loaded_model.predict(new_data)
+        logger.info('predicted_savings complete')
 
         return predicted_savings[0]
 
