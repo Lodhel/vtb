@@ -44,17 +44,46 @@ class CalculateDepositManager:
                     'year': date_now.year,
                     'month': date_now.month
                 })
-                # deposit = self.calculate(deposit_schema)
-                # logger.info({
-                #     'user_id': data_profile['user_id'],
-                #     'deposit': deposit,
-                #     'rate_date': f'{date_now.year}.{date_now.month}'
-                # })
+                deposit = self.calculate(deposit_schema)
+                logger.info({
+                    'user_id': data_profile['user_id'],
+                    'deposit': deposit,
+                    'rate_date': f'{date_now.year}.{date_now.month}'
+                })
 
     def calculate(self, deposit_schema: DepositSchema):
-        logger.info('calculate start')
+        disposable_income = deposit_schema.income - deposit_schema.expense
+        savings_rate = self._get_savings_rate(deposit_schema)
+        predicted_savings = disposable_income * savings_rate
+
+        return predicted_savings
+
+    @staticmethod
+    def _get_savings_rate(deposit_schema: DepositSchema):
+        # Устанавливаем базовый коэффициент сбережений
+        base_rate = 0.2
+
+        # Корректируем коэффициент на основе количества детей
+        if deposit_schema.count_child > 0:
+            base_rate -= 0.03 * deposit_schema.count_child  # Каждый ребенок -> уменьшаем депозит
+
+        # Учитываем влияние инфляции
+        base_rate -= 0.01 * (deposit_schema.inf / 100)
+
+        # Учитываем уровень образования (пример категориального признака)
+        if deposit_schema.education.lower() in ["higher", "university"]:
+            base_rate += 0.05
+
+        # Учитываем семейное положение
+        if deposit_schema.married:
+            base_rate += 0.03  # Увеличиваем коэффициент для женатых/замужних
+
+        # Ограничиваем коэффициент в разумных пределах
+        base_rate = max(0.05, min(0.4, base_rate))
+        return base_rate
+
+    def calculate_at_xgboost(self, deposit_schema: DepositSchema):
         loaded_model = self.load_model(self.model_path)
-        logger.info('loaded_model complete')
 
         new_data = pd.DataFrame({
             'income': [deposit_schema.income],
