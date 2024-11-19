@@ -1,3 +1,4 @@
+import datetime
 from dataclasses import dataclass
 
 
@@ -17,3 +18,10 @@ class DepositSchema:
     married: bool         # Семейное положение (категориальный признак)
     year: int             # Год (если хотите его использовать)
     month: int            # Месяц (если хотите его использовать)
+
+
+@dataclass
+class RecommendedDepositSchema:
+    user_id: int
+    deposit: float
+    rate_date: datetime.date

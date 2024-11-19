@@ -90,6 +90,17 @@ class User(Base):
     accumulated_account = relationship("AccumulatedAccount", back_populates="owner", uselist=False)
     profile = relationship("UserProfile", back_populates="owner", uselist=False)
     saving_goals = relationship("SavingGoal", back_populates="user")
+    recommended_deposits = relationship("RecommendedDeposit", back_populates="user")
+
+
+class RecommendedDeposit(Base):
+    __tablename__ = "recommended_deposits"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    recommended_deposit = Column(Float, nullable=False)
+    rate_date = Column(Date, nullable=False)
+
+    user = relationship("User", back_populates="recommended_deposits")
 
 
 class AccumulatedAccount(Base):
