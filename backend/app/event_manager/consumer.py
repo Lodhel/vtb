@@ -19,7 +19,7 @@ class AIOWebConsumer(object):
     async def stop(self) -> None:
         await self.__consumer.stop()
 
-    async def consumption(self) -> None:
+    async def consumption(self):
         await self.start()
         try:
             async for msg in self.__consumer:
@@ -32,5 +32,6 @@ class AIOWebConsumer(object):
                     'timestamp': msg.timestamp
                 }
                 logger.info(data_log)
+                yield data_log
         finally:
             await self.stop()

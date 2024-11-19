@@ -3,7 +3,7 @@ from fastapi_utils.tasks import repeat_every
 from starlette.middleware.cors import CORSMiddleware
 
 from backend.app.routes import router
-from backend.app.tasks.calculate_progress_percentage import CalculateManager
+from backend.app.tasks.xg_boost_ml.calculate_deposit_manager import CalculateDepositManager
 
 
 def create_app() -> FastAPI:
@@ -24,12 +24,12 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
-    calculate_progress_percentage_manager = CalculateManager()
+    calculate_deposit_manager: CalculateDepositManager = CalculateDepositManager()
 
     @app.on_event("startup")
     @repeat_every(seconds=60)
     async def run_calculate_progress_percentage():
-        await calculate_progress_percentage_manager.run()
+        await calculate_deposit_manager.run()
         return
 
     return app

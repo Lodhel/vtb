@@ -50,6 +50,8 @@ services:
             - backend/.env
         ports:
             - 9092:9092
+        logging:
+          driver: none
 
 volumes:
     postgres_data:
