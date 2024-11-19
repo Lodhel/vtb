@@ -32,13 +32,16 @@ class CalculateDepositManager(ManagerSQLAlchemy):
                 deposit: float = self.calculate(deposit_schema)
                 rate_date: datetime.date = datetime.datetime.strptime(f'{date_now.year}-{date_now.month}', "%Y-%m").date()
 
-                await self.save_recommended_deposit(
-                    RecommendedDepositSchema(**{
-                        'user_id': data_profile['user_id'],
-                        'deposit': deposit,
-                        'rate_date': rate_date
-                    })
-                )
+                try:
+                    await self.save_recommended_deposit(
+                        RecommendedDepositSchema(**{
+                            'user_id': data_profile['user_id'],
+                            'deposit': deposit,
+                            'rate_date': rate_date
+                        })
+                    )
+                except Exception as ex:
+                    logger.info(ex)
 
     async def save_recommended_deposit(self, recommended_deposit_schema: RecommendedDepositSchema):
         async with AsyncSession(self.engine, autoflush=False, expire_on_commit=False) as session:
@@ -53,12 +56,12 @@ class CalculateDepositManager(ManagerSQLAlchemy):
             recommended_deposit: RecommendedDeposit | None = recommended_deposit_query.scalars().first()
 
             if recommended_deposit:
-                recommended_deposit.deposit = recommended_deposit_schema.deposit
+                recommended_deposit.recommended_deposit = recommended_deposit_schema.deposit
             else:
                 recommended_deposit: RecommendedDeposit = RecommendedDeposit(
                     user_id=recommended_deposit_schema.user_id,
                     rate_date=recommended_deposit_schema.rate_date,
-                    deposit=recommended_deposit_schema.deposit
+                    recommended_deposit=recommended_deposit_schema.deposit
                 )
                 session.add(recommended_deposit)
 

@@ -21,14 +21,54 @@ accumulated_accounts_tags = ["accumulated_accounts_router"]
 class AccumulatedAccountMIXIN(UserAuthManager, MainRouterMIXIN, ManagerSQLAlchemy):
 
     @staticmethod
-    def get_data_by_response_created(account_model: AccumulatedAccount) -> dict:
+    async def get_data_by_response_created(session: AsyncSession, account_model: AccumulatedAccount) -> dict:
+        invitations_query = await session.execute(
+            select(
+                accumulated_account_invitations.c.invited_user_id,
+                accumulated_account_invitations.c.role,
+                accumulated_account_invitations.c.status
+            ).where(accumulated_account_invitations.c.account_id == account_model.id)
+        )
+        invitations = invitations_query.fetchall()
+
+        # 2. Получение списка ID приглашённых пользователей
+        invited_user_ids = [row.invited_user_id for row in invitations]
+
+        # 3. Загрузка данных о пользователях
+        invited_users_query = await session.execute(
+            select(User).where(User.id.in_(invited_user_ids))
+        )
+        invited_users = invited_users_query.scalars().all()
+
+        # 4. Соединение пользователей с их ролями и статусами
+        invited_users_with_roles = [
+            {
+                "name": user.name,
+                "lastname": user.lastname,
+                "role": next((row.role.value for row in invitations if row.invited_user_id == user.id), None),
+                "status": next((row.status.value for row in invitations if row.invited_user_id == user.id), None),
+            }
+            for user in invited_users
+        ]
+
+        # 5. Загрузка владельца
+        await session.refresh(account_model, ["owner"])
+
+        # 6. Формирование финального ответа
         return {
             'id': account_model.id,
             'owner_id': account_model.owner_id,
             'amount': float(account_model.amount),
             'currency': account_model.currency.value,
             'account_type': account_model.account_type.value,
-            'created_at': account_model.created_at.strftime('%Y-%m-%d %H:%M:%S.%f')
+            'created_at': account_model.created_at.strftime('%Y-%m-%d %H:%M:%S.%f'),
+            'users': {
+                "owner": {
+                    "name": account_model.owner.name,
+                    "lastname": account_model.owner.lastname,
+                },
+                "invited_users": invited_users_with_roles,
+            }
         }
 
 
@@ -61,13 +101,12 @@ class AccumulatedAccountRouter(AccumulatedAccountMIXIN):
                         or_(
                             AccumulatedAccount.owner_id == user.id,
                             accumulated_account_invitations.c.invited_user_id == user.id
-                        ),
-                        accumulated_account_invitations.c.status == 'CONFIRMED'
+                        )
                     )
                 )
                 accounts = accounts_select.scalars().all()
                 data: List[dict] = [
-                    self.get_data_by_response_created(account) for account in accounts
+                    await self.get_data_by_response_created(session, account) for account in accounts
                 ]
                 return self.get_data(data)
 

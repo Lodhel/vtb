@@ -36,6 +36,18 @@ class BalanceOperation(BaseModel):
     amount: float = Field(..., description="Сумма для операции (пополнения или списания)")
 
 
+class UserData(BaseModel):
+    name: str = Field(..., description="Имя пользователя")
+    lastname: str = Field(..., description="Фамилия пользователя")
+    role: Optional[str] = Field(None, description="Роль пользователя в счете")
+    status: Optional[str] = Field(None, description="Статус приглашения пользователя")
+
+
+class OwnerData(BaseModel):
+    name: str = Field(..., description="Имя пользователя")
+    lastname: str = Field(..., description="Фамилия пользователя")
+
+
 class AccumulatedAccountData(BaseModel):
     id: int = Field(..., description="Уникальный идентификатор счета")
     owner_id: int = Field(..., description="ID владельца счета")
@@ -43,6 +55,8 @@ class AccumulatedAccountData(BaseModel):
     currency: AccumulatedAccount.CurrencyType = Field(..., description="Валюта счета")
     account_type: AccumulatedAccount.AccountType = Field(..., description="Тип счета")
     created_at: datetime.datetime = Field(..., description="Дата создания счета")
+    owner: OwnerData = Field(..., description="Данные владельца счета")
+    invited_users: List[UserData] = Field(..., description="Список приглашённых пользователей с их ролями и статусами")
 
     class Config:
         orm_mode = True

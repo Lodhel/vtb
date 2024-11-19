@@ -13,14 +13,42 @@ accumulated_accounts_responses = {
                                     "owner_id": 123,
                                     "amount": 1000.0,
                                     "currency": "USD",
-                                    "created_at": "2024-11-12 15:30:00"
+                                    "created_at": "2024-11-12 15:30:00",
+                                    "users": {
+                                        "owner": {
+                                            "name": "Андрей",
+                                            "lastname": "Кузнецова"
+                                        },
+                                        "invited_users": [
+                                            {
+                                                "name": "Анна",
+                                                "lastname": "Иванова",
+                                                "role": "просмотр",
+                                                "status": "ожидает подтверждения"
+                                            }
+                                        ]
+                                    }
                                 },
                                 {
                                     "id": 2,
                                     "owner_id": 123,
                                     "amount": 500.0,
                                     "currency": "EUR",
-                                    "created_at": "2024-11-13 12:20:00"
+                                    "created_at": "2024-11-13 12:20:00",
+                                    "users": {
+                                        "owner": {
+                                            "name": "Андрей",
+                                            "lastname": "Кузнецова"
+                                        },
+                                        "invited_users": [
+                                            {
+                                                "name": "Анна",
+                                                "lastname": "Иванова",
+                                                "role": "просмотр",
+                                                "status": "ожидает подтверждения"
+                                            }
+                                        ]
+                                    }
                                 }
                             ]
                         }
@@ -32,7 +60,21 @@ accumulated_accounts_responses = {
                             "owner_id": 123,
                             "amount": 1000.0,
                             "currency": "USD",
-                            "created_at": "2024-11-12 15:30:00"
+                            "created_at": "2024-11-12 15:30:00",
+                            "users": {
+                                "owner": {
+                                    "name": "Андрей",
+                                    "lastname": "Кузнецова"
+                                },
+                                "invited_users": [
+                                    {
+                                        "name": "Анна",
+                                        "lastname": "Иванова",
+                                        "role": "просмотр",
+                                        "status": "ожидает подтверждения"
+                                    }
+                                ]
+                            }
                         }
                     },
                     "DepositSuccess": {
