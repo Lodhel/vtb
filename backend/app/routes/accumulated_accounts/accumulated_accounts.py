@@ -87,27 +87,24 @@ class AccumulatedAccountRouter(AccumulatedAccountMIXIN):
         self,
         request: Request,
         response: Response,
-        params: AccumulatedAccountParams = Depends(),
         headers: GeneralHeadersModel = Depends()
     ):
         async with AsyncSession(self.engine, autoflush=False, expire_on_commit=False) as session:
             if user := await self.authenticate_user(session, None, None, headers.authorization):
-                accounts_select = select(
-                    AccumulatedAccount
-                ).outerjoin(
-                    accumulated_account_invitations,
-                    AccumulatedAccount.id == accumulated_account_invitations.c.account_id
-                ).where(
-                    or_(
-                        AccumulatedAccount.owner_id == user.id,
-                        accumulated_account_invitations.c.invited_user_id == user.id
+                accounts_select = await session.execute(
+                    select(
+                        AccumulatedAccount
+                    ).outerjoin(
+                        accumulated_account_invitations,
+                        AccumulatedAccount.id == accumulated_account_invitations.c.account_id
+                    ).where(
+                        or_(
+                            AccumulatedAccount.owner_id == user.id,
+                            accumulated_account_invitations.c.invited_user_id == user.id
+                        )
                     )
                 )
-                if params.account_id:
-                    accounts_select.filter_by(id=params.account_id)
-
-                accounts_query = await session.execute(accounts_select)
-                accounts = accounts_query.scalars().all()
+                accounts = accounts_select.scalars().all()
                 data: List[dict] = [
                     await self.get_data_by_response_created(session, account) for account in accounts
                 ]
