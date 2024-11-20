@@ -87,7 +87,7 @@ class AccumulatedAccountRouter(AccumulatedAccountMIXIN):
         self,
         request: Request,
         response: Response,
-        params: AccumulatedAccountParams,
+        params: AccumulatedAccountParams = Depends(),
         headers: GeneralHeadersModel = Depends()
     ):
         async with AsyncSession(self.engine, autoflush=False, expire_on_commit=False) as session:
