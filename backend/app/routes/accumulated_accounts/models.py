@@ -1,8 +1,21 @@
 import datetime
+
+from fastapi import Query
 from pydantic import BaseModel, Field
 from typing import List, Optional
 
 from backend.app.models import UserRole, AccumulatedAccount
+
+
+class AccumulatedAccountParams:
+    def __init__(
+        self,
+        account_id: str = Query(
+            None,
+            description="Уникальный идентификатор счета пользователя (accountId)"
+        )
+    ):
+        self.account_id = account_id
 
 
 class AccumulatedAccountCreate(BaseModel):
