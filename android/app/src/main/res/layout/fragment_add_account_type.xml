@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/base800"
+    android:fillViewport="true"
+    tools:context=".MainActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@color/blue400"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:src="@drawable/profile"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/cashback_btn"
+            app:layout_constraintBottom_toBottomOf="@id/profile"
+            app:layout_constraintStart_toEndOf="@id/profile"
+            app:layout_constraintTop_toTopOf="@id/profile" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mainPart"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rounded_base800"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profile">
+
+            <TextView
+                android:id="@+id/closeBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="20dp"
+                android:text="Закрыть"
+                android:textColor="@color/blue400"
+                android:textSize="14sp"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Выберите тип счета"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@id/closeBtn" />
+
+            <TextView
+                android:id="@+id/personalBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:clickable="true"
+                android:drawableLeft="@drawable/person"
+                android:drawablePadding="16dp"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:text="Личный"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/title" />
+
+            <TextView
+                android:id="@+id/jointBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:clickable="true"
+                android:drawableLeft="@drawable/group"
+                android:drawablePadding="16dp"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:text="Совместный"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/personalBtn" />
+
+            <TextView
+                android:id="@+id/childBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:clickable="true"
+                android:drawableLeft="@drawable/repair"
+                android:drawablePadding="16dp"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:text="Счет для ребенка"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/jointBtn" />
+
+            <TextView
+                android:id="@+id/crowdBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:clickable="true"
+                android:drawableLeft="@drawable/medicine"
+                android:drawablePadding="16dp"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:text="Краудфандинговый"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/childBtn" />
+
+            <TextView
+                android:id="@+id/investmentsBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:clickable="true"
+                android:drawableLeft="@drawable/charity"
+                android:drawablePadding="16dp"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:text="Для инвестиций"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/crowdBtn" />
+
+            <TextView
+                android:id="@+id/socialBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:clickable="true"
+                android:drawableLeft="@drawable/charity"
+                android:drawablePadding="16dp"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:text="Для социальных целей"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/investmentsBtn" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

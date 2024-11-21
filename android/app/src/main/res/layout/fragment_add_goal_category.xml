@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/base800"
+    android:fillViewport="true"
+    tools:context=".MainActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@color/blue400"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:src="@drawable/profile"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/cashback_btn"
+            app:layout_constraintBottom_toBottomOf="@id/profile"
+            app:layout_constraintStart_toEndOf="@id/profile"
+            app:layout_constraintTop_toTopOf="@id/profile" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mainPart"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rounded_base800"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profile">
+
+            <TextView
+                android:id="@+id/backBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="20dp"
+                android:text="Назад"
+                android:textColor="@color/blue400"
+                android:textSize="14sp"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Выберите\nкатерогию накопления"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@id/backBtn" />
+
+            <TextView
+                android:id="@+id/presentBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:clickable="true"
+                android:drawableLeft="@drawable/present"
+                android:drawablePadding="16dp"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:text="Подарок"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/title" />
+
+            <TextView
+                android:id="@+id/travelBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:clickable="true"
+                android:drawableLeft="@drawable/travel"
+                android:drawablePadding="16dp"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:text="Путешествие"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/presentBtn" />
+
+            <TextView
+                android:id="@+id/repairBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:clickable="true"
+                android:drawableLeft="@drawable/repair"
+                android:drawablePadding="16dp"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:text="Ремонт"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/travelBtn" />
+
+            <TextView
+                android:id="@+id/medcineBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:clickable="true"
+                android:drawableLeft="@drawable/medicine"
+                android:drawablePadding="16dp"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:text="Медицина"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/repairBtn" />
+
+            <TextView
+                android:id="@+id/charityBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:clickable="true"
+                android:drawableLeft="@drawable/charity"
+                android:drawablePadding="16dp"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:text="Благотворительность"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/medcineBtn" />
+
+            <TextView
+                android:id="@+id/addNewBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:clickable="true"
+                android:drawableLeft="@drawable/add_btn_44"
+                android:drawablePadding="16dp"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:text="Свой вариант"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/charityBtn" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

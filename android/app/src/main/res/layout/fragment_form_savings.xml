@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainPart"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/base800"
+    android:orientation="vertical"
+    app:layout_constraintTop_toBottomOf="@id/profile">
+
+    <TextView
+        android:id="@+id/backBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:text="Назад"
+        android:textColor="@color/blue400"
+        android:textSize="14sp" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginHorizontal="16dp"
+        android:progressTint="@color/blue400"
+        android:progressBackgroundTint="@color/base900"
+        android:max="100"
+        android:progress="42"/>
+
+    <TextView
+        android:id="@+id/goalTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="Сколько получилось отложить"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Сумма"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/savingsET"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="16dp"
+        android:paddingHorizontal="16dp"
+        android:hint="30000"
+        android:textColorHint="@color/base400"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:inputType="number"
+        android:background="@drawable/rounded_grey_btn"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/next"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/rounded_blue_btn"
+        android:text="Далее"
+        android:textAllCaps="false"
+        android:textColor="@color/blue400"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+</LinearLayout>
